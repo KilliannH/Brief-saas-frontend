@@ -1,32 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 
-export default function CreateBrief() {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    objectives: [""],
-    targetAudience: "",
-    budget: "",
-    deadline: "",
-    deliverables: [""],
-    constraints: "",
-    clientName: "",
-    clientEmail: ""
-  });
-
-  const [error, setError] = useState("");
+export default function EditBrief() {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [form, setForm] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    api.get(`/briefs/${id}`)
+      .then(res => setForm(res.data))
+      .catch(() => setError("Brief introuvable."));
+  }, [id]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleListChange = (field, index, value) => {
-    const list = [...form[field]];
-    list[index] = value;
-    setForm({ ...form, [field]: list });
+    const updated = [...form[field]];
+    updated[index] = value;
+    setForm({ ...form, [field]: updated });
   };
 
   const addToList = (field) => {
@@ -36,24 +32,33 @@ export default function CreateBrief() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/briefs", form);
+      await api.put(`/briefs/${id}`, form);
       navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-      setError("Erreur lors de la création du brief.");
+    } catch {
+      setError("Erreur lors de la mise à jour.");
     }
   };
 
+  if (!form) return <p className="text-center mt-10">{error || "Chargement..."}</p>;
+  
+  if (form?.clientValidated) {
+    return (
+        <div className="max-w-xl mx-auto mt-10 text-center">
+        <h2 className="text-xl font-bold text-gray-700">Ce brief a déjà été validé ✅</h2>
+        <p className="text-gray-600 mt-2">Il n’est plus modifiable pour des raisons de sécurité.</p>
+        </div>
+    );}
+  
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Nouveau brief</h1>
+      <h1 className="text-2xl font-bold mb-6">Modifier le brief</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
         <Input label="Titre" name="title" value={form.title} onChange={handleChange} />
         <Textarea label="Description" name="description" value={form.description} onChange={handleChange} />
         <Textarea label="Audience cible" name="targetAudience" value={form.targetAudience} onChange={handleChange} />
         <Input label="Budget" name="budget" value={form.budget} onChange={handleChange} />
-        <Input label="Deadline" name="deadline" type="datetime-local" value={form.deadline} onChange={handleChange} />
+        <Input label="Deadline" type="datetime-local" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
         <Textarea label="Contraintes" name="constraints" value={form.constraints} onChange={handleChange} />
         <Input label="Nom du client" name="clientName" value={form.clientName} onChange={handleChange} />
         <Input label="Email du client" name="clientEmail" value={form.clientEmail} onChange={handleChange} />
@@ -64,7 +69,7 @@ export default function CreateBrief() {
         {error && <p className="text-red-500">{error}</p>}
 
         <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-          Créer le brief
+          Sauvegarder les modifications
         </button>
       </form>
     </div>
@@ -77,7 +82,7 @@ function Input({ label, name, value, onChange, type = "text" }) {
       <label className="block text-sm font-medium mb-1">{label}</label>
       <input
         name={name}
-        value={value}
+        value={value || ""}
         onChange={onChange}
         type={type}
         className="w-full px-3 py-2 border rounded"
@@ -93,7 +98,7 @@ function Textarea({ label, name, value, onChange }) {
       <label className="block text-sm font-medium mb-1">{label}</label>
       <textarea
         name={name}
-        value={value}
+        value={value || ""}
         onChange={onChange}
         rows="3"
         className="w-full px-3 py-2 border rounded"

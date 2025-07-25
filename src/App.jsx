@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateBrief from "./pages/CreateBrief";
 import Login from "./pages/Login";
 import PublicBrief from "./pages/PublicBrief";
+import EditBrief from "./pages/EditBrief";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
 
@@ -24,6 +25,7 @@ export default function App() {
         {token ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/briefs/:id/edit" element={<EditBrief />} />
             <Route path="/briefs/new" element={<CreateBrief />} />
             <Route path="*" element={<Dashboard />} />
           </>
