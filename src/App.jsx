@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Navbar from "./components/Navbar";
 import CreateBrief from "./pages/CreateBrief";
-
+import Login from "./pages/Login";
+import PublicBrief from "./pages/PublicBrief";
+import Navbar from "./components/Navbar";
 import { useState } from "react";
 
 export default function App() {
@@ -19,6 +19,8 @@ export default function App() {
       {token && <Navbar onLogout={handleLogout} />}
 
       <Routes>
+        <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
+
         {token ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
