@@ -1,29 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../services/auth";
 
 export default function Navbar() {
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, [location.pathname]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    navigate("/");
-  };
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="px-6 py-4 border-b bg-white flex justify-between items-center shadow-sm sticky top-0 z-50">
-      <Link to="/" className="text-2xl font-bold text-blue-600">
+      <Link to="/" className="text-xl font-bold text-blue-600">
         BriefMate
       </Link>
 
       <div className="flex gap-4 items-center text-sm">
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <>
             <Link
               to="/dashboard"
@@ -32,7 +20,7 @@ export default function Navbar() {
               Dashboard
             </Link>
             <button
-              onClick={handleLogout}
+              onClick={logout}
               className="text-gray-600 hover:underline"
             >
               Déconnexion

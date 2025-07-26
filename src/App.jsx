@@ -7,46 +7,35 @@ import CreateBrief from "./pages/CreateBrief";
 import EditBrief from "./pages/EditBrief";
 import PublicBrief from "./pages/PublicBrief";
 import LogIn from "./pages/Login";
+import Register from "./pages/Register";
 import { ToastContainer } from "react-toastify";
+import { useAuth } from "./services/auth";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-  };
-
-  useEffect(() => {
-    const stored = localStorage.getItem("token");
-    if (stored !== token) setToken(stored);
-  }, [location.pathname]);
+  const { isAuthenticated } = useAuth();
 
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
-
       <Routes>
-        {/* Accessible à tous */}
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<LogIn onLogin={() => setToken(localStorage.getItem("token"))} />} />
         <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
-
-        {/* Authenticated routes */}
-        {token ? (
+        {isAuthenticated ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/briefs/:id/edit" element={<EditBrief />} />
             <Route path="/briefs/new" element={<CreateBrief />} />
+            <Route path="/briefs/:id/edit" element={<EditBrief />} />
             <Route path="*" element={<Dashboard />} />
           </>
         ) : (
-          <Route path="*" element={<Landing />} />
+          <>
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<Landing />} />
+          </>
         )}
       </Routes>
-
-      <ToastContainer position="bottom-right" autoClose={3000} />
-    </BrowserRouter>
+    </>
   );
 }
 

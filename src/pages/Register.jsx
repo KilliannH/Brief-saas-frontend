@@ -4,10 +4,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../services/auth";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -16,18 +19,20 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8080/auth/login", {
+      const res = await axios.post("http://localhost:8080/auth/signup", {
         email,
         password,
+        firstname,
+        lastname,
       });
 
       const token = res.data.token;
-      login(token); // met à jour le contexte et redirige
-      toast.success("Connexion réussie !");
+      login(token); // connecte et redirige
+      toast.success("Compte créé avec succès !");
     } catch (err) {
       console.error(err);
-      setError("Identifiants incorrects");
-      toast.error("Erreur de connexion");
+      setError("Erreur lors de l’inscription.");
+      toast.error("Email déjà utilisé ou données invalides.");
     }
   };
 
@@ -37,7 +42,29 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Connexion</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Prénom</label>
+          <input
+            type="text"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Nom</label>
+          <input
+            type="text"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+            required
+          />
+        </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Email</label>
@@ -67,7 +94,7 @@ export default function Login() {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
-          Se connecter
+          Créer le compte
         </button>
       </form>
     </div>
