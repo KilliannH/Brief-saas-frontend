@@ -33,6 +33,7 @@ export default function EditBrief() {
     e.preventDefault();
     try {
       await api.put(`/briefs/${id}`, form);
+      toast.success("Brief mis à jour avec succès sur BriefMate !");
       navigate("/dashboard");
     } catch {
       setError("Erreur lors de la mise à jour.");
@@ -40,14 +41,6 @@ export default function EditBrief() {
   };
 
   if (!form) return <p className="text-center mt-10">{error || "Chargement..."}</p>;
-  
-  if (form?.clientValidated) {
-    return (
-        <div className="max-w-xl mx-auto mt-10 text-center">
-        <h2 className="text-xl font-bold text-gray-700">Ce brief a déjà été validé ✅</h2>
-        <p className="text-gray-600 mt-2">Il n’est plus modifiable pour des raisons de sécurité.</p>
-        </div>
-    );}
   
   return (
     <div className="max-w-3xl mx-auto p-6">

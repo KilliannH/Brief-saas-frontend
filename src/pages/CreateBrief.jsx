@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 export default function CreateBrief() {
   const [form, setForm] = useState({
@@ -16,7 +18,8 @@ export default function CreateBrief() {
     clientEmail: ""
   });
 
-  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,12 +38,16 @@ export default function CreateBrief() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       await api.post("/briefs", form);
+      toast.success("Brief créé avec succès sur BriefMate !");
       navigate("/dashboard");
     } catch (err) {
+      toast.error("Erreur lors de la création.");
       console.error(err);
-      setError("Erreur lors de la création du brief.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,10 +68,15 @@ export default function CreateBrief() {
         <FieldList field="objectives" label="Objectifs" values={form.objectives} onChange={handleListChange} onAdd={addToList} />
         <FieldList field="deliverables" label="Livrables attendus" values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
 
-        {error && <p className="text-red-500">{error}</p>}
-
-        <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-          Créer le brief
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center justify-center gap-2"
+          disabled={isSubmitting}
+        >
+          {isSubmitting && (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+          )}
+          {isSubmitting ? "Création..." : "Créer le brief"}
         </button>
       </form>
     </div>

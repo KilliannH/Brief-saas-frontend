@@ -1,13 +1,15 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import CreateBrief from "./pages/CreateBrief";
-import Login from "./pages/Login";
-import PublicBrief from "./pages/PublicBrief";
 import EditBrief from "./pages/EditBrief";
-import Navbar from "./components/Navbar";
-import { useState } from "react";
+import PublicBrief from "./pages/PublicBrief";
+import LogIn from "./pages/Login";
+import { ToastContainer } from "react-toastify";
 
-export default function App() {
+function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const handleLogout = () => {
@@ -15,13 +17,22 @@ export default function App() {
     setToken(null);
   };
 
+  useEffect(() => {
+    const stored = localStorage.getItem("token");
+    if (stored !== token) setToken(stored);
+  }, [location.pathname]);
+
   return (
     <BrowserRouter>
-      {token && <Navbar onLogout={handleLogout} />}
+      <Navbar />
 
       <Routes>
+        {/* Accessible à tous */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<LogIn onLogin={() => setToken(localStorage.getItem("token"))} />} />
         <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
 
+        {/* Authenticated routes */}
         {token ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -30,9 +41,13 @@ export default function App() {
             <Route path="*" element={<Dashboard />} />
           </>
         ) : (
-          <Route path="*" element={<Login onLogin={setToken} />} />
+          <Route path="*" element={<Landing />} />
         )}
       </Routes>
+
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </BrowserRouter>
   );
 }
+
+export default App;

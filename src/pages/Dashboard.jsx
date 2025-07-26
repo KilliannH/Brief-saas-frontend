@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { Edit, Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
+import Loader from "../components/Loader";
+import { CheckCircle, XCircle } from "lucide-react";
 
 export default function Dashboard() {
+
   const [briefs, setBriefs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api.get("/briefs")
       .then(res => setBriefs(res.data))
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleDelete = async (id) => {
@@ -21,6 +27,8 @@ export default function Dashboard() {
     alert("Erreur lors de la suppression.");
   }
 };
+
+if (loading) return <Loader />;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -44,18 +52,28 @@ function BriefCard({ brief, onDelete }) {
   return (
     <div className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
       <div className="absolute top-2 right-2 flex gap-2">
-        <button
-          onClick={() => navigate(`/briefs/${brief.id}/edit`)}
-          className="text-blue-600 hover:text-blue-800"
-          title="Modifier"
-        >
-          <Edit size={18} />
-        </button>
+        {brief.clientValidated ? (
+          <span
+            className="text-gray-400 cursor-not-allowed"
+            title="Brief validé – édition verrouillée"
+          >
+            <Edit size={18} />
+          </span>
+        ) : (
+          <button
+            onClick={() => navigate(`/briefs/${brief.id}/edit`)}
+            className="text-blue-600 hover:text-blue-800"
+            title="Modifier"
+          >
+            <Edit size={18} />
+          </button>
+        )}
 
         <button
           onClick={() => {
             if (window.confirm("Confirmer la suppression ?")) {
               onDelete(brief.id);
+              toast.success("Brief supprimé de votre compte BriefMate.");
             }
           }}
           className="text-red-600 hover:text-red-800"
@@ -88,14 +106,25 @@ function BriefCard({ brief, onDelete }) {
 
       <Field label="Contraintes">{brief.constraints}</Field>
 
-      <div className="text-sm text-gray-500">
-        Statut : <strong>{brief.status}</strong> <br />
-        Validation client :{" "}
-        {brief.clientValidated ? (
-          <span className="text-green-600">✅ Validé</span>
-        ) : (
-          <span className="text-red-600">⛔ Non validé</span>
-        )}
+      <div className="text-sm text-gray-500 flex flex-col gap-1">
+        <div>
+          Statut : <strong>{brief.status}</strong>
+        </div>
+
+        <div className="flex items-center gap-1">
+          Validation client :{" "}
+          {brief.clientValidated ? (
+            <span className="flex items-center text-green-600">
+              <CheckCircle className="w-4 h-4 mr-1" />
+              Validé
+            </span>
+          ) : (
+            <span className="flex items-center text-red-600">
+              <XCircle className="w-4 h-4 mr-1" />
+              Non validé
+            </span>
+          )}
+        </div>
       </div>
 
       <a

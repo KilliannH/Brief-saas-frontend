@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,9 +21,11 @@ export default function Login({ onLogin }) {
 
       const token = res.data.token;
       localStorage.setItem("token", token);
-      onLogin?.(token); // callback vers App si besoin
+      onLogin?.(token); // notification vers App
+      navigate("/dashboard"); // redirection
     } catch (err) {
       setError("Identifiants incorrects");
+      toast.error("Erreur de connexion");
     }
   };
 

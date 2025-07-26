@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import { toast } from "react-toastify";
+import ValidationModal from "../components/ValidationModal";
 
 export default function PublicBrief() {
-  const { uuid } = useParams();
+  const { uuid } = useParams(); // public UUID
   const [brief, setBrief] = useState(null);
-  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     api.get(`/briefs/public/${uuid}`)
-      .then(res => setBrief(res.data))
-      .catch(err => setError("Brief introuvable."));
+      .then(res => {
+        setBrief(res.data);
+        setValidated(res.data.clientValidated);
+      })
+      .catch(() => toast.error("Brief introuvable"))
+      .finally(() => setLoading(false));
   }, [uuid]);
 
-  const handleValidate = async () => {
+  const handleValidate = async (code) => {
     try {
       await api.put(`/briefs/public/${uuid}/validate`, { code });
+      toast.success("Brief validé avec succès !");
       setValidated(true);
+      setShowModal(false);
     } catch (err) {
-        if (err.response?.status === 403) {
-            setError("Code de validation incorrect.");
-        } else {
-            setError("Erreur lors de la validation.");
-        }
+      toast.error("Code invalide ou erreur lors de la validation.");
     }
   };
 
-  if (error) return <p className="text-red-500 text-center mt-10">{error}</p>;
-  if (!brief) return <p className="text-center mt-10">Chargement...</p>;
+  if (loading) return <p className="text-center py-10">Chargement du brief...</p>;
+  if (!brief) return <p className="text-center py-10 text-red-500">Brief introuvable.</p>;
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
@@ -54,30 +58,26 @@ export default function PublicBrief() {
         </ul>
       </Info>
 
-      {brief.clientValidated || validated ? (
+      {validated ? (
         <div className="bg-green-100 text-green-700 p-4 rounded">
           ✅ Ce brief a déjà été validé.
         </div>
       ) : (
-        <div className="mt-6 space-y-3 bg-gray-50 p-4 rounded border">
-          <label className="block text-sm font-medium">
-            Validez ce brief en tant que client :
-          </label>
-          <input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Code de validation"
-                className="w-full px-3 py-2 border rounded"
-                required
-            />
+        <>
           <button
-            onClick={handleValidate}
-            className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            Valider ce brief
+            Valider le brief
           </button>
-        </div>
+
+          {showModal && (
+            <ValidationModal
+              onClose={() => setShowModal(false)}
+              onValidate={handleValidate}
+            />
+          )}
+        </>
       )}
     </div>
   );
@@ -86,8 +86,8 @@ export default function PublicBrief() {
 function Info({ label, children }) {
   return (
     <div>
-      <span className="font-semibold text-gray-800">{label} :</span>
-      <div className="text-gray-700">{children}</div>
+      <span className="font-medium text-gray-700">{label} :</span>
+      <div className="text-gray-800">{children}</div>
     </div>
   );
 }
