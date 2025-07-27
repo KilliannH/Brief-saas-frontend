@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { useNavigate } from "react-router-dom";
-import { Edit, Trash2 } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import { Edit, Trash2, Plus, Download } from "lucide-react";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { CheckCircle, XCircle } from "lucide-react";
@@ -32,7 +33,16 @@ if (loading) return <Loader />;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Mes briefs</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Mes briefs</h1>
+        <Link
+          to="/briefs/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
+        >
+          <Plus size={16} />
+          Nouveau brief
+        </Link>
+      </div>
 
       {briefs.length === 0 ? (
         <p className="text-gray-600">Aucun brief pour le moment.</p>
@@ -49,9 +59,20 @@ if (loading) return <Loader />;
 
 function BriefCard({ brief, onDelete }) {
   const navigate = useNavigate();
+
+const generatePdf = (brief) => {
+  // Todo
+};
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
+    <div id={`brief-${brief.id}`} className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
       <div className="absolute top-2 right-2 flex gap-2">
+        <button
+          onClick={() => generatePdf(brief)}
+          className="text-gray-700 hover:underline flex items-center gap-1"
+        >
+          <Download size={16} />
+        </button>
         {brief.clientValidated ? (
           <span
             className="text-gray-400 cursor-not-allowed"

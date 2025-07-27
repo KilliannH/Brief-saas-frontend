@@ -1,16 +1,33 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../services/auth";
+import { useState, useRef, useEffect } from "react";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => setOpen((prev) => !prev);
+
+  // Fermer le menu si on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav className="px-6 py-4 border-b bg-white flex justify-between items-center shadow-sm sticky top-0 z-50">
-      <Link to="/" className="text-xl font-bold text-blue-600">
-        BriefMate
+      <Link to="/" className="flex items-center gap-2 pl-6">
+        <img src={logo} alt="BriefMate logo" className="h-10 w-32 object-contain" />
       </Link>
 
-      <div className="flex gap-4 items-center text-sm">
+      <div className="flex items-center gap-4 text-sm relative">
         {isAuthenticated ? (
           <>
             <Link
@@ -19,12 +36,46 @@ export default function Navbar() {
             >
               Dashboard
             </Link>
-            <button
-              onClick={logout}
-              className="text-gray-600 hover:underline"
-            >
-              Déconnexion
-            </button>
+
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center gap-2 text-gray-800 font-medium hover:underline"
+              >
+                <img
+                  src={
+                    user?.profileImage ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      user?.firstname ?? ""
+                    )}&background=ddd&color=333`
+                  }
+                  alt="Avatar"
+                  className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                />
+                <span>{user?.firstname}</span>
+              </button>
+
+              {open && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded border text-sm z-50">
+                  <Link
+                    to="/account"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    Paramètres du compte
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              )}
+            </div>
           </>
         ) : (
           <>

@@ -1,11 +1,27 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("http://localhost:8080/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => setUser(res.data))
+        .catch(() => {
+          // token invalide ou expiré
+          logout();
+        });
+    }
+  }, [token]);
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
@@ -16,16 +32,12 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    setUser(null);
     navigate("/");
   };
 
-  useEffect(() => {
-    const stored = localStorage.getItem("token");
-    if (stored !== token) setToken(stored);
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ token, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,24 @@
+import { useAuth } from "../services/auth";
+import api from "../services/api";
+import { toast } from "react-toastify";
+
+const monthlyId = import.meta.env.VITE_STRIPE_PRICE_MONTHLY;
+const annualId = import.meta.env.VITE_STRIPE_PRICE_ANNUAL;
+
 export default function Landing() {
+
+  const { isAuthenticated } = useAuth();
+
+  const handleSubscribe = async (priceId) => {
+    try {
+      const res = await api.post("/stripe/checkout", { priceId });
+      window.location.href = res.data.url;
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur de redirection vers Stripe");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Hero */}
@@ -30,30 +50,69 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Tarification */}
       <section className="px-6 py-20 text-center max-w-2xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Tarification</h2>
-        <p className="mb-6 text-gray-600">Sans engagement. Une seule formule claire :</p>
-        <div className="border rounded-lg p-6 shadow-md bg-white inline-block">
-          <p className="text-2xl font-semibold">7,99 €/mois</p>
-          <p className="text-gray-500 mb-2">ou 60 €/an</p>
-          <ul className="text-left text-sm text-gray-700 mb-4">
-            <li>✅ Briefs illimités</li>
-            <li>✅ Pages de validation client</li>
-            <li>✅ Envoi automatique par mail</li>
-          </ul>
-          <a
-            href="/login"
-            className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
-          >
-            Démarrer maintenant
-          </a>
+        <p className="mb-6 text-gray-600">Sans engagement. Deux formules :</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Mensuel */}
+          <div className="border rounded-lg p-6 shadow-md bg-white">
+            <p className="text-2xl font-semibold">7,99 €/mois</p>
+            <ul className="text-left text-sm text-gray-700 my-4">
+              <li>✅ Briefs illimités</li>
+              <li>✅ Pages de validation client</li>
+              <li>✅ Envoi automatique par mail</li>
+            </ul>
+            {isAuthenticated ? (
+              <button
+                onClick={() => handleSubscribe(monthlyId)} // remplace par ton vrai ID
+                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+              >
+                S’abonner
+              </button>
+            ) : (
+              <a
+                href="/login"
+                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+              >
+                Se connecter pour s’abonner
+              </a>
+            )}
+          </div>
+
+          {/* Annuel */}
+          <div className="border rounded-lg p-6 shadow-md bg-white">
+            <p className="text-2xl font-semibold">60 €/an</p>
+            <p className="text-sm text-gray-500">Économisez 37%</p>
+            <ul className="text-left text-sm text-gray-700 my-4">
+              <li>✅ Briefs illimités</li>
+              <li>✅ Pages de validation client</li>
+              <li>✅ Envoi automatique par mail</li>
+              <li>✅ Support prioritaire</li>
+            </ul>
+            {isAuthenticated ? (
+              <button
+                onClick={() => handleSubscribe(annualId)} // remplace par ton vrai ID
+                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+              >
+                Choisir l’annuel
+              </button>
+            ) : (
+              <a
+                href="/login"
+                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+              >
+                Se connecter pour s’abonner
+              </a>
+            )}
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="text-center py-6 text-gray-500 text-sm">
-        © {new Date().getFullYear()} BriefMate — Made with ☕ by Killiann
+        © {new Date().getFullYear()} BriefMate — Made with ☕ by Killiann H.
       </footer>
     </div>
   );
