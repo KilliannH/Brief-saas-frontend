@@ -23,22 +23,22 @@ export default function Dashboard() {
   }, []);
 
   const handleDelete = async (id) => {
-  try {
-    await api.delete(`/briefs/${id}`);
-    setBriefs(prev => prev.filter((b) => b.id !== id));
-  } catch (err) {
-    console.error("Erreur suppression :", err);
-    toast.error(t("dashboard.toast.error"));
-  }
-};
+    try {
+      await api.delete(`/briefs/${id}`);
+      setBriefs(prev => prev.filter((b) => b.id !== id));
+    } catch (err) {
+      console.error("Erreur suppression :", err);
+      toast.error(t("dashboard.toast.error"));
+    }
+  };
 
-const updateBrief = (updatedBrief) => {
-  setBriefs((prev) =>
-    prev.map((b) => (b.id === updatedBrief.id ? updatedBrief : b))
-  );
-};
+  const updateBrief = (updatedBrief) => {
+    setBriefs((prev) =>
+      prev.map((b) => (b.id === updatedBrief.id ? updatedBrief : b))
+    );
+  };
 
-if (loading) return <Loader />;
+  if (loading) return <Loader />;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -70,9 +70,9 @@ function BriefCard({ brief, onDelete, onUpdate }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-const generatePdf = (brief) => {
-  // Todo
-};
+  const generatePdf = (brief) => {
+    // Todo
+  };
 
   return (
     <div id={`brief-${brief.id}`} className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
@@ -140,31 +140,31 @@ const generatePdf = (brief) => {
 
       <div className="text-sm text-gray-500 flex flex-col gap-1">
         <div className="text-sm text-gray-500 flex flex-col gap-1">
-  <div>
-    {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
-  </div>
+          <div>
+            {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
+          </div>
 
-  {brief.status === "DRAFT" && (
-  <button
-    onClick={async () => {
-      try {
-        const res = await api.post(`/briefs/${brief.id}/submit`);
-        toast.success(t("dashboard.toast.submitted"));
+          {brief.status === "DRAFT" && (
+            <button
+              onClick={async () => {
+                try {
+                  const res = await api.post(`/briefs/${brief.id}/submit`);
+                  toast.success(t("dashboard.toast.submitted"));
 
-        // mettre à jour le brief localement
-        onUpdate(res.data); // ⚠️ le backend doit renvoyer le brief à jour
-      } catch (err) {
-        console.error(err);
-        toast.error(t("dashboard.toast.submitError"));
-      }
-    }}
-    className="flex items-center gap-1 text-blue-600 hover:underline text-sm mt-1"
-  >
-    <Send className="w-4 h-4" />
-    {t("briefcard.sendToClient")}
-  </button>
-)}
-</div>
+                  // mettre à jour le brief localement
+                  onUpdate(res.data); // ⚠️ le backend doit renvoyer le brief à jour
+                } catch (err) {
+                  console.error(err);
+                  toast.error(t("dashboard.toast.submitError"));
+                }
+              }}
+              className="flex items-center gap-1 text-blue-600 hover:underline text-sm mt-1"
+            >
+              <Send className="w-4 h-4" />
+              {t("briefcard.sendToClient")}
+            </button>
+          )}
+        </div>
 
         <div className="flex items-center gap-1">
           {t("briefcard.clientValidation")} :{" "}
