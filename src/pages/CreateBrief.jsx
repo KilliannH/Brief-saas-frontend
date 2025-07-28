@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+import { useTranslation } from "react-i18next";
 
 export default function CreateBrief() {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -41,10 +42,10 @@ export default function CreateBrief() {
     setIsSubmitting(true);
     try {
       await api.post("/briefs", form);
-      toast.success("Brief créé avec succès sur BriefMate !");
+      toast.success(t("create.toast.success"));
       navigate("/dashboard");
     } catch (err) {
-      toast.error("Erreur lors de la création.");
+      toast.error(t("create.toast.error"));
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -53,20 +54,20 @@ export default function CreateBrief() {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Nouveau brief</h1>
+      <h1 className="text-2xl font-bold mb-6">{t("create.title")}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-        <Input label="Titre" name="title" value={form.title} onChange={handleChange} />
-        <Textarea label="Description" name="description" value={form.description} onChange={handleChange} />
-        <Textarea label="Audience cible" name="targetAudience" value={form.targetAudience} onChange={handleChange} />
-        <Input label="Budget" name="budget" value={form.budget} onChange={handleChange} />
-        <Input label="Deadline" name="deadline" type="datetime-local" value={form.deadline} onChange={handleChange} />
-        <Textarea label="Contraintes" name="constraints" value={form.constraints} onChange={handleChange} />
-        <Input label="Nom du client" name="clientName" value={form.clientName} onChange={handleChange} />
-        <Input label="Email du client" name="clientEmail" value={form.clientEmail} onChange={handleChange} />
+        <Input label={t("create.form.title")} name="title" value={form.title} onChange={handleChange} />
+        <Textarea label={t("create.form.description")} name="description" value={form.description} onChange={handleChange} />
+        <Textarea label={t("create.form.audience")} name="targetAudience" value={form.targetAudience} onChange={handleChange} />
+        <Input label={t("create.form.budget")} name="budget" value={form.budget} onChange={handleChange} />
+        <Input label={t("create.form.deadline")} name="deadline" type="date" value={form.deadline} onChange={handleChange} />
+        <Textarea label={t("create.form.constraints")} name="constraints" value={form.constraints} onChange={handleChange} />
+        <Input label={t("create.form.clientName")} name="clientName" value={form.clientName} onChange={handleChange} />
+        <Input label={t("create.form.clientEmail")} name="clientEmail" value={form.clientEmail} onChange={handleChange} />
 
-        <FieldList field="objectives" label="Objectifs" values={form.objectives} onChange={handleListChange} onAdd={addToList} />
-        <FieldList field="deliverables" label="Livrables attendus" values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
+        <FieldList field="objectives" label={t("create.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
+        <FieldList field="deliverables" label={t("create.form.deliverables")} values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
 
         <button
           type="submit"
@@ -76,7 +77,7 @@ export default function CreateBrief() {
           {isSubmitting && (
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
           )}
-          {isSubmitting ? "Création..." : "Créer le brief"}
+          {isSubmitting ? t("create.button.isSubmitting") : t("create.button.submit")}
         </button>
       </form>
     </div>
@@ -116,6 +117,7 @@ function Textarea({ label, name, value, onChange }) {
 }
 
 function FieldList({ field, label, values, onChange, onAdd }) {
+  const { t } = useTranslation();
   return (
     <div>
       <label className="block text-sm font-medium mb-1">{label}</label>
@@ -133,7 +135,7 @@ function FieldList({ field, label, values, onChange, onAdd }) {
         onClick={() => onAdd(field)}
         className="text-blue-600 text-sm mt-1"
       >
-        + Ajouter
+        {t("create.form.button.add")}
       </button>
     </div>
   );

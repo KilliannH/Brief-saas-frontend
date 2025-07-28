@@ -15,14 +15,17 @@ export default function Dashboard() {
   useEffect(() => {
     api.get("/briefs")
       .then(res => setBriefs(res.data))
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err);
+        toast.error(t("dashboard.toast.fetchError"));
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const handleDelete = async (id) => {
   try {
     await api.delete(`/briefs/${id}`);
-    setBriefs(briefs.filter((b) => b.id !== id)); // mise à jour locale
+    setBriefs(prev => prev.filter((b) => b.id !== id));
   } catch (err) {
     console.error("Erreur suppression :", err);
     toast.error(t("dashboard.toast.error"));
@@ -131,7 +134,7 @@ const generatePdf = (brief) => {
 
       <div className="text-sm text-gray-500 flex flex-col gap-1">
         <div>
-          {t("briefcard.status")} : <strong>{brief.status}</strong>
+          {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
         </div>
 
         <div className="flex items-center gap-1">
@@ -154,7 +157,7 @@ const generatePdf = (brief) => {
         href={`/public/briefs/${brief.publicUuid}`}
         className="text-blue-600 underline text-sm"
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
       >
         {t("briefcard.clientLink")}
       </a>
