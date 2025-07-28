@@ -3,19 +3,20 @@ import { useAuth } from "../services/auth";
 import { useState, useRef, useEffect } from "react";
 import { BadgeCheck } from "lucide-react";
 import logo from "../assets/logo.png";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => setOpen((prev) => !prev);
+  const [openMenu, setOpenMenu] = useState(false);
+  const menuRef = useRef(null);
+  const { i18n } = useTranslation();
 
   // Fermer le menu si on clique en dehors
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenu(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -24,11 +25,19 @@ export default function Navbar() {
 
   return (
     <nav className="px-6 py-4 border-b bg-white flex justify-between items-center shadow-sm sticky top-0 z-50">
-      <Link to="/" className="flex items-center gap-2 pl-6">
-        <img src={logo} alt="BriefMate logo" className="h-10 w-32 object-contain" />
-      </Link>
+      {/* Logo à gauche */}
+      <div className="flex items-center gap-4">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="BriefMate logo" className="h-10 w-32 object-contain" />
+        </Link>
 
-      <div className="flex items-center gap-4 text-sm relative">
+        <LanguageSwitcher />
+      </div>
+
+      {/* Barre centrale vide */}
+      <div className="flex-1"></div>
+
+      <div className="flex items-center gap-4 text-sm">
         {isAuthenticated ? (
           <>
             <Link
@@ -38,50 +47,47 @@ export default function Navbar() {
               Dashboard
             </Link>
 
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative" ref={menuRef}>
               <button
-  onClick={toggleDropdown}
-  className="flex items-center gap-2 text-gray-800 font-medium"
->
-  {/* Avatar */}
-  <img
-    src={
-      user?.profileImage ||
-      `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        user?.firstname ?? ""
-      )}&background=ddd&color=333`
-    }
-    alt="Avatar"
-    className="w-8 h-8 rounded-full object-cover border border-gray-300"
-  />
+                onClick={() =>
+                  setOpenMenu(openMenu === "user" ? null : "user")
+                }
+                className="flex items-center gap-2 text-gray-800 font-medium"
+              >
+                <img
+                  src={
+                    user?.profileImage ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      user?.firstname ?? ""
+                    )}&background=ddd&color=333`
+                  }
+                  alt="Avatar"
+                  className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                />
+                <div className="flex items-center gap-2">
+                  <span className="text-sm hover:underline">{user?.firstname}</span>
+                  {user?.subscriptionActive && (
+                    <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <BadgeCheck className="w-4 h-4" />
+                      Abonné
+                    </span>
+                  )}
+                </div>
+              </button>
 
-  {/* Prénom + badge alignés */}
-  <div className="flex items-center gap-2">
-    {/* Seul ce span se souligne au hover */}
-    <span className="text-sm hover:underline">{user?.firstname}</span>
-
-    {user?.subscriptionActive && (
-      <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-        <BadgeCheck className="w-4 h-4" />
-        Abonné
-      </span>
-    )}
-  </div>
-</button>
-
-              {open && (
+              {openMenu === "user" && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded border text-sm z-50">
                   <Link
                     to="/account"
                     className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={() => setOpen(false)}
+                    onClick={() => setOpenMenu(null)}
                   >
                     Paramètres du compte
                   </Link>
                   <button
                     onClick={() => {
                       logout();
-                      setOpen(false);
+                      setOpenMenu(null);
                     }}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   >

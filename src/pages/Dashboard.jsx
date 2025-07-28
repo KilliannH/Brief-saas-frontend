@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
-import jsPDF from "jspdf";
 import { Edit, Trash2, Plus, Download } from "lucide-react";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
