@@ -3,11 +3,12 @@ import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
 import { Edit, Trash2, Plus, Download } from "lucide-react";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import Loader from "../components/Loader";
 import { CheckCircle, XCircle } from "lucide-react";
 
 export default function Dashboard() {
-
+  const { t } = useTranslation();
   const [briefs, setBriefs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +25,7 @@ export default function Dashboard() {
     setBriefs(briefs.filter((b) => b.id !== id)); // mise à jour locale
   } catch (err) {
     console.error("Erreur suppression :", err);
-    alert("Erreur lors de la suppression.");
+    toast.error(t("dashboard.toast.error"));
   }
 };
 
@@ -33,18 +34,18 @@ if (loading) return <Loader />;
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Mes briefs</h1>
+        <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
         <Link
           to="/briefs/new"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
         >
           <Plus size={16} />
-          Nouveau brief
+          {t("button.new")}
         </Link>
       </div>
 
       {briefs.length === 0 ? (
-        <p className="text-gray-600">Aucun brief pour le moment.</p>
+        <p className="text-gray-600">{t("dashboard.noBrief")}</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {briefs.map((brief) => (
@@ -57,6 +58,7 @@ if (loading) return <Loader />;
 }
 
 function BriefCard({ brief, onDelete }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
 const generatePdf = (brief) => {
@@ -69,13 +71,14 @@ const generatePdf = (brief) => {
         <button
           onClick={() => generatePdf(brief)}
           className="text-gray-700 hover:underline flex items-center gap-1"
+          title={t("briefcard.buttonDownload.title")}
         >
           <Download size={16} />
         </button>
         {brief.clientValidated ? (
           <span
             className="text-gray-400 cursor-not-allowed"
-            title="Brief validé – édition verrouillée"
+            title={t("briefcard.buttonEditBlocked.title")}
           >
             <Edit size={18} />
           </span>
@@ -83,7 +86,7 @@ const generatePdf = (brief) => {
           <button
             onClick={() => navigate(`/briefs/${brief.id}/edit`)}
             className="text-blue-600 hover:text-blue-800"
-            title="Modifier"
+            title={t("briefcard.buttonEdit.title")}
           >
             <Edit size={18} />
           </button>
@@ -91,13 +94,13 @@ const generatePdf = (brief) => {
 
         <button
           onClick={() => {
-            if (window.confirm("Confirmer la suppression ?")) {
+            if (window.confirm(t("dashboard.modal.delete"))) {
               onDelete(brief.id);
-              toast.success("Brief supprimé de votre compte BriefMate.");
+              toast.success(t("dashboard.toast.delete"));
             }
           }}
           className="text-red-600 hover:text-red-800"
-          title="Supprimer"
+          title={t("briefcard.buttonDelete.title")}
         >
           <Trash2 size={18} />
         </button>
@@ -107,41 +110,41 @@ const generatePdf = (brief) => {
       <h2 className="text-xl font-semibold">{brief.title}</h2>
       <p className="text-sm text-gray-600">{brief.description}</p>
 
-      <Field label="Client">{brief.clientName}</Field>
-      <Field label="Budget">{brief.budget}</Field>
-      <Field label="Deadline">{brief.deadline?.slice(0, 10)}</Field>
-      <Field label="Audience">{brief.targetAudience}</Field>
+      <Field label={t("briefcard.clientField.label")}>{brief.clientName}</Field>
+      <Field label={t("briefcard.budgetField.label")}>{brief.budget}</Field>
+      <Field label={t("briefcard.deadlineField.label")}>{brief.deadline?.slice(0, 10)}</Field>
+      <Field label={t("briefcard.audienceField.label")}>{brief.targetAudience}</Field>
 
-      <Field label="Objectifs">
+      <Field label={t("briefcard.objectivesField.label")}>
         <ul className="list-disc ml-5">
           {brief.objectives?.map((o, i) => <li key={i}>{o}</li>)}
         </ul>
       </Field>
 
-      <Field label="Livrables">
+      <Field label={t("briefcard.deliverablesField.label")}>
         <ul className="list-disc ml-5">
           {brief.deliverables?.map((d, i) => <li key={i}>{d}</li>)}
         </ul>
       </Field>
 
-      <Field label="Contraintes">{brief.constraints}</Field>
+      <Field label={t("briefcard.constraintsField.label")}>{brief.constraints}</Field>
 
       <div className="text-sm text-gray-500 flex flex-col gap-1">
         <div>
-          Statut : <strong>{brief.status}</strong>
+          {t("briefcard.status")} : <strong>{brief.status}</strong>
         </div>
 
         <div className="flex items-center gap-1">
-          Validation client :{" "}
+          {t("briefcard.clientValidation")} :{" "}
           {brief.clientValidated ? (
             <span className="flex items-center text-green-600">
               <CheckCircle className="w-4 h-4 mr-1" />
-              Validé
+              {t("briefcard.clientValidation.validate")}
             </span>
           ) : (
             <span className="flex items-center text-red-600">
               <XCircle className="w-4 h-4 mr-1" />
-              Non validé
+              {t("briefcard.clientValidation.unvalidate")}
             </span>
           )}
         </div>
@@ -153,7 +156,7 @@ const generatePdf = (brief) => {
         target="_blank"
         rel="noreferrer"
       >
-        Voir la version client
+        {t("briefcard.clientLink")}
       </a>
     </div>
   );

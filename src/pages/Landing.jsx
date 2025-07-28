@@ -17,7 +17,7 @@ export default function Landing() {
       window.location.href = res.data.url;
     } catch (err) {
       console.error(err);
-      toast.error("Erreur de redirection vers Stripe");
+      toast.error(t("toast.stripe.error"));
     }
   };
 
@@ -140,7 +140,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="text-center py-6 text-gray-500 text-sm">
-        © {new Date().getFullYear()} BriefMate — Made with ☕
+        © {new Date().getFullYear()} BriefMate
       </footer>
     </div>
   );
