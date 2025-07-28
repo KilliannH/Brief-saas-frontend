@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
-import { Edit, Trash2, Plus, Download } from "lucide-react";
+import { Edit, Trash2, Plus, Download, Send } from "lucide-react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import Loader from "../components/Loader";
@@ -32,6 +32,12 @@ export default function Dashboard() {
   }
 };
 
+const updateBrief = (updatedBrief) => {
+  setBriefs((prev) =>
+    prev.map((b) => (b.id === updatedBrief.id ? updatedBrief : b))
+  );
+};
+
 if (loading) return <Loader />;
 
   return (
@@ -52,7 +58,7 @@ if (loading) return <Loader />;
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {briefs.map((brief) => (
-            <BriefCard key={brief.id} brief={brief} onDelete={handleDelete} />
+            <BriefCard key={brief.id} brief={brief} onDelete={handleDelete} onUpdate={updateBrief} />
           ))}
         </div>
       )}
@@ -60,7 +66,7 @@ if (loading) return <Loader />;
   );
 }
 
-function BriefCard({ brief, onDelete }) {
+function BriefCard({ brief, onDelete, onUpdate }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -133,9 +139,32 @@ const generatePdf = (brief) => {
       <Field label={t("briefcard.constraintsField.label")}>{brief.constraints}</Field>
 
       <div className="text-sm text-gray-500 flex flex-col gap-1">
-        <div>
-          {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
-        </div>
+        <div className="text-sm text-gray-500 flex flex-col gap-1">
+  <div>
+    {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
+  </div>
+
+  {brief.status === "DRAFT" && (
+  <button
+    onClick={async () => {
+      try {
+        const res = await api.post(`/briefs/${brief.id}/submit`);
+        toast.success(t("dashboard.toast.submitted"));
+
+        // mettre à jour le brief localement
+        onUpdate(res.data); // ⚠️ le backend doit renvoyer le brief à jour
+      } catch (err) {
+        console.error(err);
+        toast.error(t("dashboard.toast.submitError"));
+      }
+    }}
+    className="flex items-center gap-1 text-blue-600 hover:underline text-sm mt-1"
+  >
+    <Send className="w-4 h-4" />
+    {t("briefcard.sendToClient")}
+  </button>
+)}
+</div>
 
         <div className="flex items-center gap-1">
           {t("briefcard.clientValidation")} :{" "}

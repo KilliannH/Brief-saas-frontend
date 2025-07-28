@@ -49,10 +49,13 @@
   "briefcard.status.SUBMITTED": "Envoyé au client",
   "briefcard.status.VALIDATED": "Validé",
   "briefcard.status.ARCHIVED": "Archivé",
+  "briefcard.sendToClient": "Envoyer au client",
   "dashboard.modal.delete": "Êtes vous sûr de vouloir supprimer ceci ?",
   "dashboard.toast.delete": "Brief supprimé de votre compte BriefMate",
   "dashboard.toast.fetchError": "Erreur lors de la récupération des briefs",
   "dashboard.toast.error": "Erreur lors de la suppression",
+  "dashboard.toast.submitted": "Brief envoyé au client",
+  "dashboard.toast.submitError": "Erreur lors de l'envoi du brief",
 
   "create.toast.success": "Brief créé avec succès sur BriefMate !",
   "create.toast.error": "Erreur lors de la création.",

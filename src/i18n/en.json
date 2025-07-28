@@ -49,10 +49,13 @@
   "briefcard.status.SUBMITTED": "Submitted",
   "briefcard.status.VALIDATED": "Validated",
   "briefcard.status.ARCHIVED": "Archived",
+  "briefcard.sendToClient": "Send to client",
   "dashboard.modal.delete": "Are you sure you want to delete this?",
   "dashboard.toast.delete": "Brief removed from your BriefMate account.",
   "dashboard.toast.fetchError": "Error while fetching briefs",
   "dashboard.toast.error": "Error while deleting",
+  "dashboard.toast.submitted": "Brief sent to client",
+  "dashboard.toast.submitError": "Error while sending brief",
 
   "create.toast.success": "Brief successfully created on BriefMate!",
   "create.toast.error": "Error while creating the brief.",
