@@ -67,6 +67,7 @@ export default function Dashboard() {
 }
 
 function BriefCard({ brief, onDelete, onUpdate }) {
+  const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -93,7 +94,14 @@ function BriefCard({ brief, onDelete, onUpdate }) {
           </span>
         ) : (
           <button
-            onClick={() => navigate(`/briefs/${brief.id}/edit`)}
+            onClick={() => {
+              if (brief.status !== "DRAFT") {
+                setShowConfirm(true);
+              } else {
+                // Le brief est déjà en brouillon, on redirige directement
+                navigate(`/briefs/${brief.id}/edit`);
+              }
+            }}
             className="text-blue-600 hover:text-blue-800"
             title={t("briefcard.buttonEdit.title")}
           >
@@ -139,7 +147,7 @@ function BriefCard({ brief, onDelete, onUpdate }) {
       <Field label={t("briefcard.constraintsField.label")}>{brief.constraints}</Field>
 
       <div className="text-sm text-gray-500 flex flex-col gap-1">
-        <div className="text-sm text-gray-500 flex flex-col gap-1">
+        <div>
           <div>
             {t("briefcard.status")} : <strong>{t(`briefcard.status.${brief.status}`)}</strong>
           </div>
@@ -152,7 +160,7 @@ function BriefCard({ brief, onDelete, onUpdate }) {
                   toast.success(t("dashboard.toast.submitted"));
 
                   // mettre à jour le brief localement
-                  onUpdate(res.data); // ⚠️ le backend doit renvoyer le brief à jour
+                  onUpdate(res.data);
                 } catch (err) {
                   console.error(err);
                   toast.error(t("dashboard.toast.submitError"));
@@ -190,6 +198,41 @@ function BriefCard({ brief, onDelete, onUpdate }) {
       >
         {t("briefcard.clientLink")}
       </a>
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          {/* Modale animée */}
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md animate-fadeInScale">
+            <p className="text-sm text-gray-700 mb-6">
+              {t("briefcard.edit.confirm")}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-3 py-1 text-sm border rounded hover:bg-gray-100 text-gray-700"
+              >
+                {t("cancel")}
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await api.patch(`/briefs/${brief.id}`, {
+                      status: "DRAFT",
+                    });
+                    toast.success(t("briefcard.toast.setToDraft"));
+                    onUpdate(res.data);
+                    navigate(`/briefs/${brief.id}/edit`);
+                  } catch (err) {
+                    console.error(err);
+                    toast.error(t("briefcard.toast.setToDraftError"));
+                  }
+                }}
+                className="px-4 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                {t("confirm")}
+              </button>
+            </div>
+          </div>
+        </div>)}
     </div>
   );
 }

@@ -51,7 +51,7 @@ export default function EditBrief() {
         <Textarea label="Description" name="description" value={form.description} onChange={handleChange} />
         <Textarea label="Audience cible" name="targetAudience" value={form.targetAudience} onChange={handleChange} />
         <Input label="Budget" name="budget" value={form.budget} onChange={handleChange} />
-        <Input label="Deadline" type="datetime-local" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
+        <Input label="Deadline" type="date" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
         <Textarea label="Contraintes" name="constraints" value={form.constraints} onChange={handleChange} />
         <Input label="Nom du client" name="clientName" value={form.clientName} onChange={handleChange} />
         <Input label="Email du client" name="clientEmail" value={form.clientEmail} onChange={handleChange} />
