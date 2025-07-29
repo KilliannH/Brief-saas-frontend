@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export default function EditBrief() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     api.get(`/briefs/${id}`)
       .then(res => setForm(res.data))
-      .catch(() => setError("Brief introuvable."));
+      .catch(() => toast.error(t("edit.toast.fetch.error")));
   }, [id]);
 
   const handleChange = (e) => {
@@ -33,36 +35,34 @@ export default function EditBrief() {
     e.preventDefault();
     try {
       await api.put(`/briefs/${id}`, form);
-      toast.success("Brief mis à jour avec succès sur BriefMate !");
+      toast.success(t("edit.toast.submit.success"));
       navigate("/dashboard");
     } catch {
-      setError("Erreur lors de la mise à jour.");
+      toast.error(t("edit.toast.submit.error"));
     }
   };
 
-  if (!form) return <p className="text-center mt-10">{error || "Chargement..."}</p>;
+  if (!form) return <p className="text-center mt-10">{t("edit.form.loading")}</p>;
   
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Modifier le brief</h1>
+      <h1 className="text-2xl font-bold mb-6">{t("edit.title")}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-        <Input label="Titre" name="title" value={form.title} onChange={handleChange} />
-        <Textarea label="Description" name="description" value={form.description} onChange={handleChange} />
-        <Textarea label="Audience cible" name="targetAudience" value={form.targetAudience} onChange={handleChange} />
-        <Input label="Budget" name="budget" value={form.budget} onChange={handleChange} />
-        <Input label="Deadline" type="date" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
-        <Textarea label="Contraintes" name="constraints" value={form.constraints} onChange={handleChange} />
-        <Input label="Nom du client" name="clientName" value={form.clientName} onChange={handleChange} />
-        <Input label="Email du client" name="clientEmail" value={form.clientEmail} onChange={handleChange} />
+        <Input label={t("edit.form.title")} name="title" value={form.title} onChange={handleChange} />
+        <Textarea label={t("edit.form.description")} name="description" value={form.description} onChange={handleChange} />
+        <Textarea label={t("edit.form.audience")} name="targetAudience" value={form.targetAudience} onChange={handleChange} />
+        <Input label={t("edit.form.budget")} name="budget" value={form.budget} onChange={handleChange} />
+        <Input label={t("edit.form.deadline")} type="date" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
+        <Textarea label={t("edit.form.constraints")} name="constraints" value={form.constraints} onChange={handleChange} />
+        <Input label={t("edit.form.clientName")} name="clientName" value={form.clientName} onChange={handleChange} />
+        <Input label={t("edit.form.clientEmail")} name="clientEmail" value={form.clientEmail} onChange={handleChange} />
 
-        <FieldList field="objectives" label="Objectifs" values={form.objectives} onChange={handleListChange} onAdd={addToList} />
-        <FieldList field="deliverables" label="Livrables attendus" values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
-
-        {error && <p className="text-red-500">{error}</p>}
+        <FieldList field="objectives" label={t("edit.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
+        <FieldList field="deliverables" label={t("edit.form.deliverables")} values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
 
         <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-          Sauvegarder les modifications
+          {t("edit.form.button.submit")}
         </button>
       </form>
     </div>
@@ -102,6 +102,7 @@ function Textarea({ label, name, value, onChange }) {
 }
 
 function FieldList({ field, label, values, onChange, onAdd }) {
+  const { t } = useTranslation();
   return (
     <div>
       <label className="block text-sm font-medium mb-1">{label}</label>
@@ -119,7 +120,7 @@ function FieldList({ field, label, values, onChange, onAdd }) {
         onClick={() => onAdd(field)}
         className="text-blue-600 text-sm mt-1"
       >
-        + Ajouter
+        {t("edit.form.button.add")}
       </button>
     </div>
   );

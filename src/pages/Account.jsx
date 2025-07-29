@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 import { useAuth } from "../services/auth";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function Account() {
+  const { t } = useTranslation();
   const { user, token } = useAuth();
-  console.log(user);
+
   const [form, setForm] = useState({
     firstname: "",
     lastname: "",
@@ -25,15 +27,15 @@ export default function Account() {
     if (user?.subscriptionActive) {
       switch (user.currentPriceId) {
         case import.meta.env.VITE_STRIPE_PRICE_MONTHLY:
-          setPlanLabel("Mensuel (7,99€/mois)");
+          setPlanLabel(t("account.monthly.plan.label"));
           setTargetPriceId(import.meta.env.VITE_STRIPE_PRICE_YEARLY);
           break;
         case import.meta.env.VITE_STRIPE_PRICE_YEARLY:
-          setPlanLabel("Annuel (60€/an)");
+          setPlanLabel(t("account.annual.plan.label"));
           setTargetPriceId(import.meta.env.VITE_STRIPE_PRICE_MONTHLY);
           break;
         default:
-          setPlanLabel("Inconnu");
+          setPlanLabel(t("account.unknown.plan.label"));
       }
     }
   }, [user]);
@@ -54,20 +56,20 @@ export default function Account() {
       await api.put("/me", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      toast.success("Profil mis à jour !");
+      toast.success(t("account.toast.update.success"));
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la mise à jour.");
+      toast.error(t("account.toast.update.error"));
     }
   };
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Mon profil</h1>
+      <h1 className="text-2xl font-bold mb-6">{t("account.title")}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 shadow rounded">
         <div>
-          <label className="block text-sm font-medium mb-1">Prénom</label>
+          <label className="block text-sm font-medium mb-1">{t("account.form.firstname")}</label>
           <input
             name="firstname"
             type="text"
@@ -78,7 +80,7 @@ export default function Account() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Nom</label>
+          <label className="block text-sm font-medium mb-1">{t("account.form.lastname")}</label>
           <input
             name="lastname"
             type="text"
@@ -104,7 +106,7 @@ export default function Account() {
       htmlFor="profileImage"
       className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 text-white text-xs rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition"
     >
-      Modifier
+      {t("account.form.image.edit")}
     </label>
   </div>
 
@@ -112,7 +114,7 @@ export default function Account() {
     id="profileImage"
     name="profileImage"
     type="text"
-    placeholder="Coller une URL d’image ici"
+    placeholder={t("account.form.image.placeholder")}
     className="flex-1 px-3 py-2 border rounded-md"
     value={form.profileImage}
     onChange={handleChange}
@@ -123,20 +125,20 @@ export default function Account() {
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          Enregistrer les modifications
+          {t("account.form.button.submit")}
         </button>
       </form>
 
       {user?.subscriptionActive && (
           <div className="pt-4 border-t mt-4">
-            <span className="text-sm text-gray-600">Abonnement :</span>
+            <span className="text-sm text-gray-600">{t("account.plan.title")} :</span>
             <div className="text-base font-medium mb-2">{planLabel}</div>
 
             <button
               onClick={handleManage}
               className="text-sm text-blue-600 hover:underline"
             >
-              Gérer mon abonnement
+              {t("account.plan.button.edit")}
             </button>
           </div>
         )}
