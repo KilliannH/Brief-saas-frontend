@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const protocol = import.meta.env.VITE_BE_PROTOCOL;
+const host = import.meta.env.VITE_BE_HOST;
+const port = import.meta.env.VITE_BE_PORT;
+
+
 const api = axios.create({
-  baseURL: "http://localhost:8080", // à adapter en prod
+  baseURL: `${protocol}://${host}:${port}`,
 });
 
 api.interceptors.request.use((config) => {

@@ -2,6 +2,12 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const protocol = import.meta.env.VITE_BE_PROTOCOL;
+const host = import.meta.env.VITE_BE_HOST;
+const port = import.meta.env.VITE_BE_PORT;
+
+const baseUrl = `${protocol}://${host}:${port}`
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -12,7 +18,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8080/me", {
+        .get(baseUrl + "/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUser(res.data))

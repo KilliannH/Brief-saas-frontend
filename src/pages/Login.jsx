@@ -4,6 +4,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../services/auth";
 
+const protocol = import.meta.env.VITE_BE_PROTOCOL;
+const host = import.meta.env.VITE_BE_HOST;
+const port = import.meta.env.VITE_BE_PORT;
+
+const baseUrl = `${protocol}://${host}:${port}`
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +22,7 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8080/auth/login", {
+      const res = await axios.post(baseUrl + "/auth/login", {
         email,
         password,
       });
