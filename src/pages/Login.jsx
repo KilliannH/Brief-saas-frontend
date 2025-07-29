@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../services/auth";
+import { useTranslation } from "react-i18next";
 
 const protocol = import.meta.env.VITE_BE_PROTOCOL;
 const host = import.meta.env.VITE_BE_HOST;
@@ -11,6 +12,7 @@ const port = import.meta.env.VITE_BE_PORT;
 const baseUrl = `${protocol}://${host}:${port}`
 
 export default function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,11 +31,11 @@ export default function Login() {
 
       const token = res.data.token;
       login(token); // met à jour le contexte et redirige
-      toast.success("Connexion réussie !");
+      toast.success(t("login.toast.success"));
     } catch (err) {
       console.error(err);
-      setError("Identifiants incorrects");
-      toast.error("Erreur de connexion");
+      setError(t("login.error"));
+      toast.error(t("login.toast.error"));
     }
   };
 
@@ -43,10 +45,10 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Connexion</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">{t("login.title")}</h2>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Email</label>
+          <label className="block text-sm font-medium mb-1">{t("login.email")}</label>
           <input
             type="email"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -57,7 +59,7 @@ export default function Login() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-1">Mot de passe</label>
+          <label className="block text-sm font-medium mb-1">{t("login.password")}</label>
           <input
             type="password"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -73,7 +75,7 @@ export default function Login() {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
-          Se connecter
+          {t("login.button")}
         </button>
       </form>
     </div>

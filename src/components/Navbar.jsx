@@ -10,7 +10,7 @@ export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   // Fermer le menu si on clique en dehors
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function Navbar() {
               to="/dashboard"
               className="text-gray-700 hover:underline"
             >
-              Dashboard
+              {t("navbar.dashboard")}
             </Link>
 
             <div className="relative" ref={menuRef}>
@@ -69,7 +69,7 @@ export default function Navbar() {
                   {user?.subscriptionActive && (
                     <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
                       <BadgeCheck className="w-4 h-4" />
-                      Abonné
+                      {t("navbar.badge")}
                     </span>
                   )}
                 </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
                     className="block px-4 py-2 hover:bg-gray-100"
                     onClick={() => setOpenMenu(null)}
                   >
-                    Paramètres du compte
+                    {t("navbar.menu.account")}
                   </Link>
                   <button
                     onClick={() => {
@@ -91,7 +91,7 @@ export default function Navbar() {
                     }}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100"
                   >
-                    Déconnexion
+                    {t("navbar.menu.logout")}
                   </button>
                 </div>
               )}
@@ -103,13 +103,13 @@ export default function Navbar() {
               to="/login"
               className="text-gray-700 hover:underline"
             >
-              Connexion
+              {t("navbar.login")}
             </Link>
             <Link
               to="/register"
               className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
             >
-              Créer un compte
+              {t("navbar.button")}
             </Link>
           </>
         )}

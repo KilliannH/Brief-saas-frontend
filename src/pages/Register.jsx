@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 import { useAuth } from "../services/auth";
 
 const protocol = import.meta.env.VITE_BE_PROTOCOL;
@@ -11,12 +12,16 @@ const port = import.meta.env.VITE_BE_PORT;
 const baseUrl = `${protocol}://${host}:${port}`
 
 export default function Register() {
+  const { t } = useTranslation();
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
+
+  const lang = i18n.language;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,15 +33,16 @@ export default function Register() {
         password,
         firstname,
         lastname,
+        language: lang,
       });
 
       const token = res.data.token;
       login(token); // connecte et redirige
-      toast.success("Compte créé avec succès !");
+      toast.success(t("register.toast.success"));
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de l’inscription.");
-      toast.error("Email déjà utilisé ou données invalides.");
+      setError(t("register.error"));
+      toast.error(t("register.toast.error"));
     }
   };
 
@@ -46,10 +52,10 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">{t("register.title")}</h2>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Prénom</label>
+          <label className="block text-sm font-medium mb-1">{t("register.firstname")}</label>
           <input
             type="text"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -60,7 +66,7 @@ export default function Register() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Nom</label>
+          <label className="block text-sm font-medium mb-1">{t("register.lastname")}</label>
           <input
             type="text"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -71,7 +77,7 @@ export default function Register() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Email</label>
+          <label className="block text-sm font-medium mb-1">{t("register.email")}</label>
           <input
             type="email"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -82,7 +88,7 @@ export default function Register() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-1">Mot de passe</label>
+          <label className="block text-sm font-medium mb-1">{t("register.password")}</label>
           <input
             type="password"
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
@@ -94,11 +100,33 @@ export default function Register() {
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
+        <div className="mb-4 flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            id="acceptTerms"
+            checked={acceptTerms}
+            onChange={() => setAcceptTerms(!acceptTerms)}
+            className="mt-1"
+            required
+          />
+          <label htmlFor="acceptTerms">
+            {t("register.terms.label")}{" "}
+            <a
+              href="/terms-of-use"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              {t("register.terms.link")}
+            </a>.
+          </label>
+        </div>
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
-          Créer le compte
+          {t("register.button")}
         </button>
       </form>
     </div>

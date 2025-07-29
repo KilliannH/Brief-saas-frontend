@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
+import VerifyEmail from "./pages/VerifyEmail";
 import { ToastContainer } from "react-toastify";
 import { useAuth } from "./services/auth";
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
+        <Route path="/verify" element={<VerifyEmail />} />
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancel" element={<PaymentCancel />} />
         {isAuthenticated ? (
