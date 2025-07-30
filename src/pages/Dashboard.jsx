@@ -99,42 +99,42 @@ function BriefCard({ brief, onDelete, onUpdate }) {
   const navigate = useNavigate();
 
   const generatePdf = async (brief) => {
-  const toastId = toast.loading(t("pdf.toast.loading")); // "Génération du PDF..."
+    const toastId = toast.loading(t("pdf.toast.loading")); // "Génération du PDF..."
 
-  try {
-    const res = await api.get(`/briefs/${brief.id}/pdf`, {
-      responseType: "blob",
-      headers: {
-        "Accept-Language": i18n.language,
-      },
-    });
+    try {
+      const res = await api.get(`/briefs/${brief.id}/pdf`, {
+        responseType: "blob",
+        headers: {
+          "Accept-Language": i18n.language,
+        },
+      });
 
-    const blob = new Blob([res.data], { type: "application/pdf" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `brief.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `brief.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
 
-    toast.update(toastId, {
-      render: t("pdf.toast.success"), // "PDF téléchargé avec succès"
-      type: "success",
-      isLoading: false,
-      autoClose: 3000,
-    });
-  } catch (err) {
-    console.error("Erreur génération PDF :", err);
-    toast.update(toastId, {
-      render: t("pdf.toast.error"), // "Impossible de générer le PDF"
-      type: "error",
-      isLoading: false,
-      autoClose: 4000,
-    });
-  }
-};
+      toast.update(toastId, {
+        render: t("pdf.toast.success"), // "PDF téléchargé avec succès"
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    } catch (err) {
+      console.error("Erreur génération PDF :", err);
+      toast.update(toastId, {
+        render: t("pdf.toast.error"), // "Impossible de générer le PDF"
+        type: "error",
+        isLoading: false,
+        autoClose: 4000,
+      });
+    }
+  };
 
   return (
     <div id={`brief-${brief.id}`} className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
@@ -226,15 +226,24 @@ function BriefCard({ brief, onDelete, onUpdate }) {
           {brief.status === "DRAFT" && (
             <button
               onClick={async () => {
+                const loadingToast = toast.loading(t("dashboard.toast.sending"));
                 try {
                   const res = await api.post(`/briefs/${brief.id}/submit`);
-                  toast.success(t("dashboard.toast.submitted"));
-
-                  // mettre à jour le brief localement
-                  onUpdate(res.data);
+                  toast.update(loadingToast, {
+                    render: t("dashboard.toast.submitted"),
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 3000,
+                  });
+                  onUpdate(res.data); // mise à jour locale
                 } catch (err) {
                   console.error(err);
-                  toast.error(t("dashboard.toast.submitError"));
+                  toast.update(loadingToast, {
+                    render: t("dashboard.toast.submitError"),
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000,
+                  });
                 }
               }}
               className="flex items-center gap-1 text-blue-600 hover:underline text-sm mt-1"

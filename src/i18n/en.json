@@ -59,6 +59,7 @@
   "dashboard.toast.delete": "Brief removed from your BriefMate account.",
   "dashboard.toast.fetchError": "Error while fetching briefs",
   "dashboard.toast.error": "Error while deleting",
+  "dashboard.toast.sending": "Sending in progress...",
   "dashboard.toast.submitted": "Brief sent to client",
   "dashboard.toast.submitError": "Error while sending brief",
   "dashboard.restriction.freePlan": "Feature available to subscribers only",
@@ -118,6 +119,7 @@
   "account.form.button.submit": "Save changes",
   "account.plan.title": "Subscription",
   "account.plan.button.edit": "Manage my subscription",
+  "account.subscription.endsOn": "Your subscription will end on",
 
   "login.toast.success": "Successfully logged in!",
   "login.toast.error": "An error occurred during login",
@@ -176,5 +178,17 @@
   "verifyEmail.success": "Email successfully verified!",
   "verifyEmail.success.button": "Log in",
   "verifyEmail.error": "Invalid or expired link.",
-  "verifyEmail.error.button": "Back to sign up"
+  "verifyEmail.error.button": "Back to sign up",
+
+  "legal.title": "Legal Notice",
+  "legal.content": "**Site Editor**  \nBriefMate, published by [Your name / company]  \nAddress: [Full address]  \nEmail: contact@brief-mate.com  \nPublication director: [Full name]\n\n**Hosting**  \nThis site is hosted by [Hosting company name]  \nAddress: [Hosting address]  \nPhone: [Phone number if needed]\n\n**Intellectual Property**  \nAll content on this site (texts, images, logos, etc.) is the exclusive property of BriefMate unless otherwise stated.\n\n**Disclaimer**  \nBriefMate cannot be held liable for any direct or indirect damage caused to the user's device when accessing the site.",
+  "terms.title": "Terms of Use",
+  "terms.content": "### 1. Purpose\nThese terms govern the use of the BriefMate platform by its users.\n\n### 2. Access to the service\nThe service is available for free with limited features. A subscription unlocks all features.\n\n### 3. User account\nThe user is responsible for the information provided and the confidentiality of their account.\n\n### 4. Personal data\nData is processed in accordance with our privacy policy. No data is shared with third parties without consent.\n\n### 5. Termination\nUsers may cancel their subscription at any time from their account page.\n\n### 6. Modifications\nBriefMate reserves the right to update these terms at any time.",
+  
+  "privacy.title": "Privacy Policy",
+  "privacy.content": "**Last updated: July 30, 2025**\n\n## 1. Data Collected\nWe collect the information you provide when registering (first name, last name, email), and data related to your use of the service (briefs, preferences, payments).\n\n## 2. Use of Data\nYour data is used only to:\n- Provide the BriefMate service\n- Improve the user experience\n- Manage payments and access\n\n## 3. Storage and Security\nYour data is stored securely and never sold. We use industry-standard security tools.\n\n## 4. Your Rights\nIn accordance with GDPR, you can request access to, modification, or deletion of your data at any time by contacting us at **support@brief-mate.com**.\n\n## 5. Cookies\nBriefMate uses cookies to:\n- Improve navigation\n- Measure site traffic\nYou can disable cookies via your browser settings.\n\n## 6. Contact\nFor any questions about this policy, please reach out to:\n**support@brief-mate.com**",
+
+  "footer.legal": "Legal Notice",
+  "footer.terms": "Terms of use",
+  "footer.privacy": "Privacy Policy"
 }

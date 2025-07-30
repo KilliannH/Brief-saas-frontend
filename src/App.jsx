@@ -12,10 +12,15 @@ import Account from "./pages/Account";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
 import VerifyEmail from "./pages/VerifyEmail";
+import Legal from "./pages/Legal";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import { ToastContainer } from "react-toastify";
 import { useAuth } from "./services/auth";
+import { useTranslation } from "react-i18next";
 
 function App() {
+  const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
 
   return (
@@ -27,6 +32,9 @@ function App() {
         <Route path="/verify" element={<VerifyEmail />} />
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancel" element={<PaymentCancel />} />
+        <Route path="/legal" element={<Legal />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         {isAuthenticated ? (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -44,6 +52,22 @@ function App() {
         )}
       </Routes>
       <ToastContainer position="bottom-right" autoClose={3000} />
+      <footer className="text-center text-xs text-gray-500 py-6 border-t bg-white">
+        <p className="mb-1">
+          <a href="/legal" className="hover:underline">
+            {t("footer.legal")}
+          </a>{" "}
+          |{" "}
+          <a href="/terms" className="hover:underline">
+            {t("footer.terms")}
+          </a>
+          {" "}|{" "}
+          <a href="/privacy" className="hover:underline">
+            {t("footer.privacy")}
+          </a>
+        </p>
+        <p className="text-[11px]">&copy; {new Date().getFullYear()} BriefMate</p>
+      </footer>
     </>
   );
 }

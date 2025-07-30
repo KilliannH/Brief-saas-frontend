@@ -9,7 +9,7 @@ const monthlyId = import.meta.env.VITE_STRIPE_PRICE_MONTHLY;
 const annualId = import.meta.env.VITE_STRIPE_PRICE_ANNUAL;
 
 export default function Account() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, token } = useAuth();
 
   const [form, setForm] = useState({
@@ -19,6 +19,16 @@ export default function Account() {
   });
   const [planLabel, setPlanLabel] = useState("");
   const [targetPriceId, setTargetPriceId] = useState("");
+
+  const formatDate = (dateString, locale = navigator.language) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
 
   useEffect(() => {
     if (user) {
@@ -42,7 +52,7 @@ export default function Account() {
           setPlanLabel(t("account.unknown.plan.label"));
       }
     }
-  }, [user]);
+  }, [user, i18n.language]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,7 +154,15 @@ export default function Account() {
       </form>
 
       {user?.subscriptionActive ? (
-        <div className="pt-4 border-t mt-4">
+        <div className="pt-4 border-t mt-4 relative">
+          {/* Message en haut à droite */}
+          {user.cancelAtPeriodEnd && user.subscriptionEndAt && (
+            <p className="absolute top-0 right-0 text-sm text-yellow-600">
+              {t("account.subscription.endsOn")} {formatDate(user.subscriptionEndAt, i18n.language)}
+            </p>
+          )}
+
+          {/* Infos plan d'abonnement */}
           <span className="text-sm text-gray-600">{t("account.plan.title")} :</span>
           <div className="text-base font-medium mb-2">{planLabel}</div>
 

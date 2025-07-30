@@ -59,7 +59,8 @@
   "dashboard.toast.delete": "Brief supprimé de votre compte BriefMate",
   "dashboard.toast.fetchError": "Erreur lors de la récupération des briefs",
   "dashboard.toast.error": "Erreur lors de la suppression",
-  "dashboard.toast.submitted": "Brief envoyé au client",
+  "dashboard.toast.sending": "Envoi en cours...",
+  "dashboard.toast.submitted": "Brief envoyé au client !",
   "dashboard.toast.submitError": "Erreur lors de l'envoi du brief",
   "dashboard.restriction.freePlan": "Fonctionnalité réservée aux abonnés",
   "dashboard.restriction.pdf": "La génération de PDF est réservée aux abonnés.",
@@ -117,6 +118,7 @@
   "account.form.button.submit": "Enregister les modifications",
   "account.plan.title": "Abonnement",
   "account.plan.button.edit": "Gérer mon abonnement",
+  "account.subscription.endsOn": "Votre abonnement prendra fin le",
 
   "login.toast.success": "Connexion réussie !",
   "login.toast.error": "login.toast.error",
@@ -175,5 +177,16 @@
   "verifyEmail.success": "Email vérifié avec succès !",
   "verifyEmail.success.button": "Se connecter",
   "verifyEmail.error": "Lien invalide ou expiré.",
-  "verifyEmail.error.button": "Retour à l'inscription"
+  "verifyEmail.error.button": "Retour à l'inscription",
+
+  "legal.title": "Mentions légales",
+  "legal.content": "**Éditeur du site**  \nBriefMate, projet édité par Killiann Hervagault  \nAdresse : 25, Rue de la planche au Gué 44300 Nantes  \nEmail : support@brief-mate.com  \nDirecteur de la publication : Killiann Hervagault\n\n**Hébergement**  \nCe site est hébergé par [Nom de l’hébergeur]  \nAdresse : [Adresse hébergeur]  \nTéléphone : [Numéro si besoin]\n\n**Propriété intellectuelle**  \nTous les contenus présents sur ce site (textes, images, logos, etc.) sont la propriété exclusive de BriefMate, sauf mention contraire.\n\n**Responsabilité**  \nBriefMate ne saurait être tenu responsable des dommages directs ou indirects causés à l’équipement de l’utilisateur lors de l'accès au site.",
+  "terms.title": "Conditions Générales d’Utilisation",
+  "terms.content": "### 1. Objet\nLes présentes conditions régissent l’utilisation du site BriefMate par les utilisateurs.\n\n### 2. Accès au service\nLe service est accessible gratuitement avec des fonctionnalités limitées. Un abonnement permet de débloquer l'ensemble des fonctionnalités.\n\n### 3. Compte utilisateur\nL'utilisateur est responsable des informations transmises et de la confidentialité de son compte.\n\n### 4. Données personnelles\nLes données sont traitées conformément à notre politique de confidentialité. Aucune donnée ne sera partagée à des tiers sans consentement.\n\n### 5. Résiliation\nL'utilisateur peut résilier son abonnement à tout moment via son espace personnel.\n\n### 6. Modifications\nBriefMate se réserve le droit de modifier ces conditions à tout moment.",
+  "privacy.title": "Politique de confidentialité",
+  "privacy.content": "**Dernière mise à jour : 30 juillet 2025**\n\n## 1. Données collectées\nNous collectons les données que vous fournissez lors de votre inscription (nom, prénom, email), ainsi que les informations liées à l'utilisation du service (briefs, préférences, paiements).\n\n## 2. Utilisation des données\nVos données sont utilisées uniquement pour :\n- Fournir le service BriefMate\n- Améliorer l’expérience utilisateur\n- Gérer les paiements et l’accès au service\n\n## 3. Stockage et sécurité\nVos données sont stockées de manière sécurisée et ne sont jamais revendues. Nous utilisons des outils de sécurité conformes aux standards du secteur.\n\n## 4. Vos droits\nConformément au RGPD, vous pouvez demander l’accès, la modification ou la suppression de vos données à tout moment en nous contactant à **support@brief-mate.com**.\n\n## 5. Cookies\nBriefMate utilise des cookies pour :\n- Améliorer la navigation\n- Mesurer l’audience du site\nVous pouvez désactiver les cookies via les paramètres de votre navigateur.\n\n## 6. Contact\nPour toute question concernant cette politique, contactez-nous à :\n**support@brief-mate.com**",
+
+  "footer.legal": "Mentions légales",
+  "footer.terms": "Conditions générales",
+  "footer.privacy": "Politique de confidentialité"
 }

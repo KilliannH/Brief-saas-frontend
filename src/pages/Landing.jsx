@@ -137,11 +137,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="text-center py-6 text-gray-500 text-sm">
-        © {new Date().getFullYear()} BriefMate
-      </footer>
     </div>
   );
 }
