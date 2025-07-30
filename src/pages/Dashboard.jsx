@@ -93,6 +93,7 @@ export default function Dashboard() {
 }
 
 function BriefCard({ brief, onDelete, onUpdate }) {
+  const { user } = useAuth();
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -104,13 +105,23 @@ function BriefCard({ brief, onDelete, onUpdate }) {
   return (
     <div id={`brief-${brief.id}`} className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">
       <div className="absolute top-2 right-2 flex gap-2">
-        <button
-          onClick={() => generatePdf(brief)}
-          className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
-          title={t("briefcard.buttonDownload.title")}
-        >
-          <Download size={18} />
-        </button>
+        {user?.subscriptionActive ? (
+          <button
+            onClick={() => generatePdf(brief)}
+            className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            title={t("briefcard.buttonDownload.title")}
+          >
+            <Download size={18} />
+          </button>
+        ) : (
+          <button
+            onClick={() => toast.info(t("dashboard.restriction.pdf"))}
+            className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            title={t("briefcard.buttonDownload.title")}
+          >
+            <Download size={18} />
+          </button>
+        )}
         {brief.clientValidated ? (
           <span
             className="text-gray-400 cursor-not-allowed"

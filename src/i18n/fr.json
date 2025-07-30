@@ -62,6 +62,7 @@
   "dashboard.toast.submitted": "Brief envoyé au client",
   "dashboard.toast.submitError": "Erreur lors de l'envoi du brief",
   "dashboard.restriction.freePlan": "Fonctionnalité réservée aux abonnés",
+  "dashboard.restriction.pdf": "La génération de PDF est réservée aux abonnés.",
   "dashboard.restriction.limitReached": "Limite atteinte avec le plan gratuit",
   "dashboard.restriction.upgradeLink": "Passer à l’abonnement",
 
