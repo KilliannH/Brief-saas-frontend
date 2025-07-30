@@ -65,6 +65,10 @@
   "dashboard.restriction.pdf": "PDF generation is available for subscribers only.",
   "dashboard.restriction.limitReached": "Limit reached with the free plan",
   "dashboard.restriction.upgradeLink": "Upgrade to a paid plan",
+  "pdf.toast.loading": "Generating PDF...",
+  "pdf.toast.success": "PDF downloaded successfully!",
+  "pdf.toast.error": "Unable to generate the PDF.",
+
 
   "create.toast.success": "Brief successfully created on BriefMate!",
   "create.toast.error": "Error while creating the brief.",

@@ -93,14 +93,48 @@ export default function Dashboard() {
 }
 
 function BriefCard({ brief, onDelete, onUpdate }) {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [showConfirm, setShowConfirm] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
-  const generatePdf = (brief) => {
-    // Todo
-  };
+  const generatePdf = async (brief) => {
+  const toastId = toast.loading(t("pdf.toast.loading")); // "Génération du PDF..."
+
+  try {
+    const res = await api.get(`/briefs/${brief.id}/pdf`, {
+      responseType: "blob",
+      headers: {
+        "Accept-Language": i18n.language,
+      },
+    });
+
+    const blob = new Blob([res.data], { type: "application/pdf" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `brief.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+
+    toast.update(toastId, {
+      render: t("pdf.toast.success"), // "PDF téléchargé avec succès"
+      type: "success",
+      isLoading: false,
+      autoClose: 3000,
+    });
+  } catch (err) {
+    console.error("Erreur génération PDF :", err);
+    toast.update(toastId, {
+      render: t("pdf.toast.error"), // "Impossible de générer le PDF"
+      type: "error",
+      isLoading: false,
+      autoClose: 4000,
+    });
+  }
+};
 
   return (
     <div id={`brief-${brief.id}`} className="bg-white shadow-md rounded-lg p-4 space-y-2 relative">

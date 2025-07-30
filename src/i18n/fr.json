@@ -65,6 +65,9 @@
   "dashboard.restriction.pdf": "La génération de PDF est réservée aux abonnés.",
   "dashboard.restriction.limitReached": "Limite atteinte avec le plan gratuit",
   "dashboard.restriction.upgradeLink": "Passer à l’abonnement",
+  "pdf.toast.loading": "Génération du PDF...",
+  "pdf.toast.success": "PDF téléchargé avec succès !",
+  "pdf.toast.error": "Impossible de générer le PDF.",
 
   "create.toast.success": "Brief créé avec succès sur BriefMate !",
   "create.toast.error": "Erreur lors de la création.",
