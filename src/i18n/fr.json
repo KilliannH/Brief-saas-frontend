@@ -61,6 +61,9 @@
   "dashboard.toast.error": "Erreur lors de la suppression",
   "dashboard.toast.submitted": "Brief envoyé au client",
   "dashboard.toast.submitError": "Erreur lors de l'envoi du brief",
+  "dashboard.restriction.freePlan": "Fonctionnalité réservée aux abonnés",
+  "dashboard.restriction.limitReached": "Limite atteinte avec le plan gratuit",
+  "dashboard.restriction.upgradeLink": "Passer à l’abonnement",
 
   "create.toast.success": "Brief créé avec succès sur BriefMate !",
   "create.toast.error": "Erreur lors de la création.",
@@ -162,5 +165,11 @@
   "navbar.menu.account": "Paramètres du compte",
   "navbar.menu.logout": "Déconnexion",
   "navbar.login": "Connexion",
-  "navbar.button": "Créer un compte"
+  "navbar.button": "Créer un compte",
+
+  "verifyEmail.inProgress": "Vérification en cours...",
+  "verifyEmail.success": "Email vérifié avec succès !",
+  "verifyEmail.success.button": "Se connecter",
+  "verifyEmail.error": "Lien invalide ou expiré.",
+  "verifyEmail.error.button": "Retour à l'inscription"
 }

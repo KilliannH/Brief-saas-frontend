@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { useAuth } from "../services/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { Edit, Trash2, Plus, Download, Send } from "lucide-react";
 import { toast } from "react-toastify";
@@ -9,6 +10,7 @@ import { CheckCircle, XCircle } from "lucide-react";
 
 export default function Dashboard() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [briefs, setBriefs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,13 +46,37 @@ export default function Dashboard() {
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
-        <Link
-          to="/briefs/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
-        >
-          <Plus size={16} />
-          {t("button.new")}
-        </Link>
+
+        {/* Restriction : 1 brief max pour comptes gratuits */}
+        {!user?.subscriptionActive && briefs.length >= 1 ? (
+          <div className="flex items-center gap-2">
+            <button
+              disabled
+              className="bg-gray-300 text-white px-4 py-2 rounded text-sm cursor-not-allowed flex items-center gap-2"
+              title={t("dashboard.restriction.freePlan")}
+            >
+              <Plus size={16} />
+              {t("button.new")}
+            </button>
+            <span className="text-sm text-gray-500">
+              {t("dashboard.restriction.limitReached")}
+            </span>
+            <Link
+              to="/account"
+              className="text-blue-600 text-sm underline hover:text-blue-800"
+            >
+              {t("dashboard.restriction.upgradeLink")}
+            </Link>
+          </div>
+        ) : (
+          <Link
+            to="/briefs/new"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
+          >
+            <Plus size={16} />
+            {t("button.new")}
+          </Link>
+        )}
       </div>
 
       {briefs.length === 0 ? (
@@ -80,10 +106,10 @@ function BriefCard({ brief, onDelete, onUpdate }) {
       <div className="absolute top-2 right-2 flex gap-2">
         <button
           onClick={() => generatePdf(brief)}
-          className="text-gray-700 hover:underline flex items-center gap-1"
+          className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
           title={t("briefcard.buttonDownload.title")}
         >
-          <Download size={16} />
+          <Download size={18} />
         </button>
         {brief.clientValidated ? (
           <span

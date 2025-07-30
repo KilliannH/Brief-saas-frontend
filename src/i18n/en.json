@@ -61,6 +61,9 @@
   "dashboard.toast.error": "Error while deleting",
   "dashboard.toast.submitted": "Brief sent to client",
   "dashboard.toast.submitError": "Error while sending brief",
+  "dashboard.restriction.freePlan": "Feature available to subscribers only",
+  "dashboard.restriction.limitReached": "Limit reached with the free plan",
+  "dashboard.restriction.upgradeLink": "Upgrade to a paid plan",
 
   "create.toast.success": "Brief successfully created on BriefMate!",
   "create.toast.error": "Error while creating the brief.",
@@ -162,5 +165,11 @@
   "navbar.menu.account": "Account settings",
   "navbar.menu.logout": "Log out",
   "navbar.login": "Log in",
-  "navbar.button": "Create account"
+  "navbar.button": "Create account",
+
+  "verifyEmail.inProgress": "Verification in progress...",
+  "verifyEmail.success": "Email successfully verified!",
+  "verifyEmail.success.button": "Log in",
+  "verifyEmail.error": "Invalid or expired link.",
+  "verifyEmail.error.button": "Back to sign up"
 }

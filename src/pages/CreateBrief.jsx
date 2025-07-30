@@ -44,9 +44,13 @@ export default function CreateBrief() {
       await api.post("/briefs", form);
       toast.success(t("create.toast.success"));
       navigate("/dashboard");
-    } catch (err) {
+    }  catch (err) {
+    if (err.response?.status === 403) {
+      toast.error(t("dashboard.restriction.limitReached"));
+    } else {
       toast.error(t("create.toast.error"));
-      console.error(err);
+    }
+    console.error(err);
     } finally {
       setIsSubmitting(false);
     }

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { CheckCircle, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import Loader from "../components/Loader";
 
 export default function VerifyEmail() {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   console.log(token);
@@ -29,7 +31,7 @@ export default function VerifyEmail() {
         {status === "loading" && (
           <div className="flex flex-col items-center gap-4">
             <Loader />
-            <p className="text-sm text-gray-700">Vérification en cours...</p>
+            <p className="text-sm text-gray-700">{t("verifyEmail.inProgress")}</p>
           </div>
         )}
 
@@ -37,13 +39,13 @@ export default function VerifyEmail() {
           <div className="flex flex-col items-center gap-4">
             <CheckCircle className="w-8 h-8 text-green-600" />
             <p className="text-sm text-green-700 font-semibold">
-              Email vérifié avec succès !
+              {t("verifyEmail.success")}
             </p>
             <button
               onClick={() => navigate("/login")}
               className="mt-2 px-4 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
             >
-              Se connecter
+              {t("verifyEmail.success.button")}
             </button>
           </div>
         )}
@@ -52,13 +54,13 @@ export default function VerifyEmail() {
           <div className="flex flex-col items-center gap-4">
             <XCircle className="w-8 h-8 text-red-600" />
             <p className="text-sm text-red-700 font-semibold">
-              Lien invalide ou expiré.
+              {t("verifyEmail.error")}
             </p>
             <button
               onClick={() => navigate("/register")}
               className="mt-2 px-4 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
             >
-              Retour à l'inscription
+              {t("verifyEmail.error.button")}
             </button>
           </div>
         )}
