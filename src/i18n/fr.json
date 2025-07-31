@@ -130,7 +130,7 @@
   "account.subscription.endsOn": "Votre abonnement prendra fin le",
 
   "login.toast.success": "Connexion réussie !",
-  "login.toast.error": "login.toast.error",
+  "login.toast.error": "Une erreur est survenue lors de la connexion",
   "login.error": "Identifiants incorrects",
   "login.title": "Connexion",
   "login.email": "Email",
@@ -197,5 +197,41 @@
 
   "footer.legal": "Mentions légales",
   "footer.terms": "Conditions générales",
-  "footer.privacy": "Politique de confidentialité"
+  "footer.privacy": "Politique de confidentialité",
+
+  "meta.landing.title": "BriefMate – Créez et partagez vos briefs facilement",
+  "meta.landing.description": "Générez, envoyez et validez des briefs professionnels, sans création de compte.",
+  "meta.dashboard.title": "Mon tableau de bord – BriefMate",
+  "meta.dashboard.description": "Gérez vos briefs, suivez les validations et exportez-les en PDF.",
+  "meta.account.title": "Mon compte – BriefMate",
+  "meta.account.description": "Mettez à jour vos informations personnelles et gérez votre abonnement.",
+  "meta.legal.title": "Mentions légales – BriefMate",
+  "meta.legal.description": "Informations légales du site brief-mate.com.",
+  "meta.terms.title": "Conditions d'utilisation – BriefMate",
+  "meta.terms.description": "Lisez nos conditions générales d'utilisation.",
+  "meta.verify.title": "Vérification de votre adresse email – BriefMate",
+  "meta.verify.description": "Confirmez votre adresse pour activer votre compte BriefMate.",
+
+  "brief.public.meta": "Brief du projet pour {{client}}",
+
+  "helmet.createBrief.title": "Créer un brief - BriefMate",
+  "helmet.createBrief.description": "Générez un brief professionnel rapidement, sans complexité.",
+  "helmet.editBrief.title": "Modifier le brief - BriefMate",
+  "helmet.editBrief.description": "Mettez à jour les détails de votre brief en quelques clics.",
+  "helmet.login.title": "Connexion - BriefMate",
+  "helmet.login.description": "Connectez-vous pour accéder à vos briefs et gérer votre compte.",
+  "helmet.register.title": "Créer un compte - BriefMate",
+  "helmet.register.description": "Inscrivez-vous gratuitement pour créer et envoyer vos briefs.",
+  "helmet.payment.success.title": "Paiement réussi - BriefMate",
+  "helmet.payment.success.description": "Merci pour votre abonnement. Vous pouvez maintenant accéder à toutes les fonctionnalités.",
+  "helmet.payment.cancel.title": "Paiement annulé - BriefMate",
+  "helmet.payment.cancel.description": "Le paiement a été annulé. Vous pouvez réessayer à tout moment.",
+  "helmet.privacy.title": "Politique de confidentialité - BriefMate",
+  "helmet.privacy.description": "Découvrez comment nous protégeons vos données personnelles.",
+
+  "helmet.404.title": "Page non trouvée - BriefMate",
+  "helmet.404.description": "Oups ! Cette page n'existe pas ou a été déplacée.",
+  "notfound.title": "Page non trouvée",
+  "notfound.description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+  "notfound.back": "Retour à l'accueil"
 }

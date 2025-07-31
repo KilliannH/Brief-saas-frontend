@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
+import CustomHelmet from "../components/CustomHelmet";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -45,6 +46,12 @@ export default function EditBrief() {
   if (!form) return <p className="text-center mt-10">{t("edit.form.loading")}</p>;
   
   return (
+    <>
+    <CustomHelmet
+  title={t("helmet.editBrief.title")}
+  description={t("helmet.editBrief.description")}
+  path="/briefs/:id/edit"
+/>
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">{t("edit.title")}</h1>
 
@@ -66,6 +73,7 @@ export default function EditBrief() {
         </button>
       </form>
     </div>
+    </>
   );
 }
 

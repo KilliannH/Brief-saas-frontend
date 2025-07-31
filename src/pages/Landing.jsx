@@ -1,5 +1,9 @@
 import { useAuth } from "../services/auth";
 import api from "../services/api";
+import noteIcon from "../assets/note-icon.png";
+import linkIcon from "../assets/link-icon.png";
+import checkIcon from "../assets/check-icon.png";
+import CustomHelmet from "../components/CustomHelmet";
 import { CheckCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -22,6 +26,13 @@ export default function Landing() {
   };
 
   return (
+    <>
+      <CustomHelmet
+        titleKey="meta.landing.title"
+        descriptionKey="meta.landing.description"
+        image="/og-landing.png"
+        path="/"
+      />
     <div className="min-h-screen bg-white text-gray-800">
       {/* Hero */}
       <section
@@ -52,13 +63,13 @@ export default function Landing() {
       {/* Features */}
       <section className="px-6 py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 text-center">
-          <Feature icon="📝" title={t("feature1.title")}>
+          <Feature icon={<img src={noteIcon} alt="Note Icon" />} title={t("feature1.title")}>
             {t("feature1.description")}
           </Feature>
-          <Feature icon="🔗" title={t("feature2.title")}>
+          <Feature icon={<img src={linkIcon} alt="Link Icon" />} title={t("feature2.title")}>
             {t("feature2.description")}
           </Feature>
-          <Feature icon="✅" title={t("feature3.title")}>
+          <Feature icon={<img src={checkIcon} alt="Check Icon" />} title={t("feature3.title")}>
             {t("feature3.description")}
           </Feature>
         </div>
@@ -138,15 +149,16 @@ export default function Landing() {
         </div>
       </section>
     </div>
+    </>
   );
 }
 
 function Feature({ icon, title, children }) {
   return (
-    <div>
-      <div className="text-4xl mb-2">{icon}</div>
-      <h3 className="font-semibold text-lg mb-1">{title}</h3>
-      <p className="text-sm text-gray-600">{children}</p>
+    <div className="flex flex-col items-center text-center">
+      <div className="w-24 h-24 mb-4">{icon}</div>
+      <h3 className="font-semibold text-lg mb-2">{title}</h3>
+      <p className="text-gray-600 text-sm">{children}</p>
     </div>
   );
 }

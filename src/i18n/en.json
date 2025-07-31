@@ -199,5 +199,41 @@
 
   "footer.legal": "Legal Notice",
   "footer.terms": "Terms of use",
-  "footer.privacy": "Privacy Policy"
+  "footer.privacy": "Privacy Policy",
+
+  "meta.landing.title": "BriefMate – Create and share your briefs easily",
+  "meta.landing.description": "Generate, send, and validate professional briefs without creating an account.",
+  "meta.dashboard.title": "My Dashboard – BriefMate",
+  "meta.dashboard.description": "Manage your briefs, track validations, and export as PDF.",
+  "meta.account.title": "My Account – BriefMate",
+  "meta.account.description": "Update your profile and manage your subscription.",
+  "meta.legal.title": "Legal Notice – BriefMate",
+  "meta.legal.description": "Legal information about brief-mate.com.",
+  "meta.terms.title": "Terms of Use – BriefMate",
+  "meta.terms.description": "Read our general terms and conditions.",
+  "meta.verify.title": "Email verification – BriefMate",
+  "meta.verify.description": "Confirm your address to activate your BriefMate account.",
+
+  "brief.public.meta": "Project brief for {{client}}",
+
+  "helmet.createBrief.title": "Create a Brief - BriefMate",
+  "helmet.createBrief.description": "Quickly generate a professional brief with ease.",
+  "helmet.editBrief.title": "Edit Brief - BriefMate",
+  "helmet.editBrief.description": "Easily update the details of your brief.",
+  "helmet.login.title": "Log In - BriefMate",
+  "helmet.login.description": "Log in to access your briefs and manage your account.",
+  "helmet.register.title": "Sign Up - BriefMate",
+  "helmet.register.description": "Create a free account to start building and sending your briefs.",
+  "helmet.payment.success.title": "Payment Successful - BriefMate",
+  "helmet.payment.success.description": "Thank you for your subscription. You now have access to all features.",
+  "helmet.payment.cancel.title": "Payment Canceled - BriefMate",
+  "helmet.payment.cancel.description": "Your payment was canceled. You can try again at any time.",
+  "helmet.privacy.title": "Privacy Policy - BriefMate",
+  "helmet.privacy.description": "Learn how we protect your personal data.",
+
+  "helmet.404.title": "Page not found - BriefMate",
+  "helmet.404.description": "Oops! This page doesn't exist.",
+  "notfound.title": "Page not found",
+  "notfound.description": "The page you’re looking for doesn’t exist or has been moved.",
+  "notfound.back": "Back to home"
 }

@@ -6,6 +6,7 @@ import { Edit, Trash2, Plus, Download, Send } from "lucide-react";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import Loader from "../components/Loader";
+import CustomHelmet from "../components/CustomHelmet";
 import { CheckCircle, XCircle } from "lucide-react";
 
 export default function Dashboard() {
@@ -67,6 +68,12 @@ export default function Dashboard() {
   if (loading) return <Loader />;
 
   return (
+    <>
+      <CustomHelmet
+        titleKey="meta.dashboard.title"
+        descriptionKey="meta.dashboard.description"
+        path="/dashboard"
+      />
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         {/* Groupe titre + select */}
@@ -170,6 +177,7 @@ export default function Dashboard() {
         </>
       )}
     </div>
+    </>
   );
 }
 

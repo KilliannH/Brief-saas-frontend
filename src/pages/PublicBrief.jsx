@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import CustomHelmet from "../components/CustomHelmet";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { CheckCircle } from "lucide-react"
@@ -8,7 +9,7 @@ import ValidationModal from "../components/ValidationModal";
 
 export default function PublicBrief() {
   const { t } = useTranslation();
-  const { uuid } = useParams(); // public UUID
+  const { uuid } = useParams();
   const [brief, setBrief] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -39,6 +40,14 @@ export default function PublicBrief() {
   if (!brief) return <p className="text-center py-10 text-red-500">{t("publicBrief.form.loadingError")}</p>;
 
   return (
+    <>
+      {brief && (
+        <CustomHelmet
+          title={`${brief.clientName} – BriefMate`}
+          description={t("brief.public.meta", { client: brief.clientName })}
+          path={`/public/briefs/${uuid}`}
+        />
+      )}
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-bold">{brief.title}</h1>
       <p className="text-gray-700">{brief.description}</p>
@@ -84,6 +93,7 @@ export default function PublicBrief() {
         </>
       )}
     </div>
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import CustomHelmet from "../components/CustomHelmet";
 import { CheckCircle, XCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Loader from "../components/Loader";
@@ -26,6 +27,12 @@ export default function VerifyEmail() {
   }, [token]);
 
   return (
+    <>
+      <CustomHelmet
+        titleKey="meta.verify.title"
+        descriptionKey="meta.verify.description"
+        path="/verify"
+      />
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center">
         {status === "loading" && (
@@ -66,5 +73,6 @@ export default function VerifyEmail() {
         )}
       </div>
     </div>
+    </>
   );
 }

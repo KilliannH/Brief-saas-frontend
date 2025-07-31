@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import CustomHelmet from "../components/CustomHelmet";
 import i18n from "i18next";
 import { useAuth } from "../services/auth";
 
@@ -47,6 +48,12 @@ export default function Register() {
   };
 
   return (
+    <>
+    <CustomHelmet
+  title={t("helmet.register.title")}
+  description={t("helmet.register.description")}
+  path="/register"
+/>
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit}
@@ -130,5 +137,6 @@ export default function Register() {
         </button>
       </form>
     </div>
+    </>
   );
 }

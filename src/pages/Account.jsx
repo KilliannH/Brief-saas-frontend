@@ -3,6 +3,7 @@ import api from "../services/api";
 import { useAuth } from "../services/auth";
 import { CheckCircle } from "lucide-react";
 import { toast } from "react-toastify";
+import CustomHelmet from "../components/CustomHelmet";
 import { useTranslation } from "react-i18next";
 
 const monthlyId = import.meta.env.VITE_STRIPE_PRICE_MONTHLY;
@@ -88,6 +89,12 @@ export default function Account() {
   };
 
   return (
+    <>
+      <CustomHelmet
+        titleKey="meta.account.title"
+        descriptionKey="meta.account.description"
+        path="/account"
+      />
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">{t("account.title")}</h1>
 
@@ -237,5 +244,6 @@ export default function Account() {
         </section>
       )}
     </div>
+    </>
   );
 }
