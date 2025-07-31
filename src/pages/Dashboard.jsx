@@ -11,18 +11,42 @@ import { CheckCircle, XCircle } from "lucide-react";
 export default function Dashboard() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const [filter, setFilter] = useState("ALL");
   const [briefs, setBriefs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // page 0 = première page
+  const [totalPages, setTotalPages] = useState(1);
+  const ITEMS_PER_PAGE = 4;
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/briefs")
-      .then(res => setBriefs(res.data))
-      .catch(err => {
+    setLoading(true);
+
+    const url =
+      filter === "ALL"
+        ? `/briefs?page=${currentPage}&size=${ITEMS_PER_PAGE}`
+        : `/briefs?status=${filter}&page=${currentPage}&size=${ITEMS_PER_PAGE}`;
+
+    api
+      .get(url)
+      .then((res) => {
+        setBriefs(res.data.content);
+        setTotalPages(res.data.totalPages);
+      })
+      .catch((err) => {
         console.error(err);
         toast.error(t("dashboard.toast.fetchError"));
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [filter, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [filter]);
+
+  const filteredBriefs = briefs.filter((brief) => {
+    if (filter === "ALL") return true;
+    return brief.status === filter;
+  });
 
   const handleDelete = async (id) => {
     try {
@@ -45,7 +69,23 @@ export default function Dashboard() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+        {/* Groupe titre + select */}
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="border px-3 py-1 rounded text-sm"
+          >
+            <option value="ALL">{t("dashboard.filter.all")}</option>
+            <option value="DRAFT">{t("dashboard.filter.draft")}</option>
+            <option value="SUBMITTED">{t("dashboard.filter.submitted")}</option>
+            <option value="VALIDATED">{t("dashboard.filter.validated")}</option>
+            { // <option value="ARCHIVED">{t("dashboard.filter.archived")}</option> -- V2
+            }
+          </select>
+        </div>
 
         {/* Restriction : 1 brief max pour comptes gratuits */}
         {!user?.subscriptionActive && briefs.length >= 1 ? (
@@ -82,11 +122,52 @@ export default function Dashboard() {
       {briefs.length === 0 ? (
         <p className="text-gray-600">{t("dashboard.noBrief")}</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {briefs.map((brief) => (
-            <BriefCard key={brief.id} brief={brief} onDelete={handleDelete} onUpdate={updateBrief} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {filteredBriefs.map((brief) => (
+              <BriefCard
+                key={brief.id}
+                brief={brief}
+                onDelete={handleDelete}
+                onUpdate={updateBrief}
+              />
+            ))}
+          </div>
+
+          {/* Pagination ici */}
+          {totalPages > 1 && (
+  <div className="flex justify-center items-center mt-6 space-x-2">
+    <button
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+      disabled={currentPage === 0}
+      className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+    >
+      {t("pagination.previous") || "Précédent"}
+    </button>
+
+    {[...Array(totalPages)].map((_, index) => (
+      <button
+        key={index}
+        onClick={() => setCurrentPage(index)}
+        className={`px-3 py-1 rounded ${index === currentPage
+          ? "bg-blue-600 text-white"
+          : "bg-gray-200 text-gray-700"
+        }`}
+      >
+        {index + 1}
+      </button>
+    ))}
+
+    <button
+      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+      disabled={currentPage === totalPages - 1}
+      className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+    >
+      {t("pagination.next") || "Suivant"}
+    </button>
+  </div>
+)}
+        </>
       )}
     </div>
   );

@@ -66,6 +66,15 @@
   "dashboard.restriction.pdf": "La génération de PDF est réservée aux abonnés.",
   "dashboard.restriction.limitReached": "Limite atteinte avec le plan gratuit",
   "dashboard.restriction.upgradeLink": "Passer à l’abonnement",
+  "dashboard.filter.all": "Tous",
+  "dashboard.filter.draft": "Brouillons",
+  "dashboard.filter.submitted": "Envoyés",
+  "dashboard.filter.validated": "Validés",
+  "dashboard.filter.archived": "Archivés",
+
+  "pagination.previous": "Précédent",
+  "pagination.next": "Suivant",
+
   "pdf.toast.loading": "Génération du PDF...",
   "pdf.toast.success": "PDF téléchargé avec succès !",
   "pdf.toast.error": "Impossible de générer le PDF.",
@@ -180,7 +189,7 @@
   "verifyEmail.error.button": "Retour à l'inscription",
 
   "legal.title": "Mentions légales",
-  "legal.content": "**Éditeur du site**  \nBriefMate, projet édité par Killiann Hervagault  \nAdresse : 25, Rue de la planche au Gué 44300 Nantes  \nEmail : support@brief-mate.com  \nDirecteur de la publication : Killiann Hervagault\n\n**Hébergement**  \nCe site est hébergé par [Nom de l’hébergeur]  \nAdresse : [Adresse hébergeur]  \nTéléphone : [Numéro si besoin]\n\n**Propriété intellectuelle**  \nTous les contenus présents sur ce site (textes, images, logos, etc.) sont la propriété exclusive de BriefMate, sauf mention contraire.\n\n**Responsabilité**  \nBriefMate ne saurait être tenu responsable des dommages directs ou indirects causés à l’équipement de l’utilisateur lors de l'accès au site.",
+  "legal.content": "**Éditeur du site**  \nBriefMate, projet édité par Killiann Hervagault  \nAdresse : 3, Rue des oiseaux 44240 La Chapelle sur Erdre  \nEmail : support@brief-mate.com  \nDirecteur de la publication : Killiann Hervagault\n\n**Hébergement**  \nCe site est hébergé par Google Cloud Platform (GCP)  \nAdresse : Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irelande \n\n**Propriété intellectuelle**  \nTous les contenus présents sur ce site (textes, images, logos, etc.) sont la propriété exclusive de BriefMate, sauf mention contraire.\n\n**Responsabilité**  \nBriefMate ne saurait être tenu responsable des dommages directs ou indirects causés à l’équipement de l’utilisateur lors de l'accès au site.",
   "terms.title": "Conditions Générales d’Utilisation",
   "terms.content": "### 1. Objet\nLes présentes conditions régissent l’utilisation du site BriefMate par les utilisateurs.\n\n### 2. Accès au service\nLe service est accessible gratuitement avec des fonctionnalités limitées. Un abonnement permet de débloquer l'ensemble des fonctionnalités.\n\n### 3. Compte utilisateur\nL'utilisateur est responsable des informations transmises et de la confidentialité de son compte.\n\n### 4. Données personnelles\nLes données sont traitées conformément à notre politique de confidentialité. Aucune donnée ne sera partagée à des tiers sans consentement.\n\n### 5. Résiliation\nL'utilisateur peut résilier son abonnement à tout moment via son espace personnel.\n\n### 6. Modifications\nBriefMate se réserve le droit de modifier ces conditions à tout moment.",
   "privacy.title": "Politique de confidentialité",
