@@ -1,6 +1,9 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import { ToastContainer } from "react-toastify";
+import { useAuth } from "./services/auth";
+import { useTranslation } from "react-i18next";
+
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import CreateBrief from "./pages/CreateBrief";
@@ -16,57 +19,49 @@ import NotFound from "./components/NotFound";
 import Legal from "./pages/Legal";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import { ToastContainer } from "react-toastify";
-import { useAuth } from "./services/auth";
-import { useTranslation } from "react-i18next";
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
+import AuthenticatedLayout from "./layouts/AuthenticatedLayout";
+import PublicLayout from "./layouts/PublicLayout";
 
 function App() {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
+  const { ready  } = useAuth();
+
+  if (!ready) return null;
 
   return (
-    <>
-  <Navbar />
-  <Routes>
-    {/* Pages publiques */}
-    <Route path="/" element={<Landing />} />
-    <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
-    <Route path="/verify" element={<VerifyEmail />} />
-    <Route path="/payment/success" element={<PaymentSuccess />} />
-    <Route path="/payment/cancel" element={<PaymentCancel />} />
-    <Route path="/legal" element={<Legal />} />
-    <Route path="/terms" element={<Terms />} />
-    <Route path="/privacy" element={<Privacy />} />
+    <Routes>
+      {/* Public Layout */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/public/briefs/:uuid" element={<PublicBrief />} />
+        <Route path="/verify" element={<VerifyEmail />} />
+        <Route path="/payment/success" element={<PaymentSuccess />} />
+        <Route path="/payment/cancel" element={<PaymentCancel />} />
+        <Route path="/legal" element={<Legal />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
 
-    {/* Auth routes */}
-    {isAuthenticated ? (
-      <>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/briefs/new" element={<CreateBrief />} />
-        <Route path="/briefs/:id/edit" element={<EditBrief />} />
-      </>
-    ) : (
-      <>
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/register" element={<Register />} />
-      </>
-    )}
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+      </Route>
 
-    {/* Page 404 globale */}
-    <Route path="*" element={<NotFound />} />
-  </Routes>
+      {/* Authenticated Layout */}
+      <Route element={<AuthenticatedLayout />}>
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/briefs/new" element={<CreateBrief />} />
+          <Route path="/briefs/:id/edit" element={<EditBrief />} />
+        </Route>
+      </Route>
 
-  <ToastContainer position="bottom-right" autoClose={3000} />
-  <footer className="text-center text-xs text-gray-500 py-6 border-t bg-white">
-    <p className="mb-1">
-      <a href="/legal" className="hover:underline">{t("footer.legal")}</a> |{" "}
-      <a href="/terms" className="hover:underline">{t("footer.terms")}</a> |{" "}
-      <a href="/privacy" className="hover:underline">{t("footer.privacy")}</a>
-    </p>
-    <p className="text-[11px]">&copy; {new Date().getFullYear()} BriefMate</p>
-  </footer>
-</>
+      {/* 404 global */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

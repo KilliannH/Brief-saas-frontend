@@ -137,6 +137,8 @@
   "login.password": "Mot de passe",
   "login.button": "Se connecter",
 
+  "loading": "Chargement...",
+
   "paymentCancel.title": "Paiement annulé",
   "paymentCancel.description": "Le processus de paiement a été annulé. Vous pouvez réessayer à tout moment.",
 

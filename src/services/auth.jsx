@@ -6,7 +6,7 @@ const protocol = import.meta.env.VITE_BE_PROTOCOL;
 const host = import.meta.env.VITE_BE_HOST;
 const port = import.meta.env.VITE_BE_PORT;
 
-const baseUrl = `${protocol}://${host}:${port}`
+const baseUrl = `${protocol}://${host}:${port}`;
 
 const AuthContext = createContext();
 
@@ -14,6 +14,7 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
+  const [isFetched, setIsFetched] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -22,10 +23,10 @@ export function AuthProvider({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUser(res.data))
-        .catch(() => {
-          // token invalide ou expiré
-          logout();
-        });
+        .catch(() => logout())
+        .finally(() => setIsFetched(true));
+    } else {
+      setIsFetched(true);
     }
   }, [token]);
 
@@ -43,7 +44,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ token, user, login, logout, isAuthenticated: !!token, ready: isFetched }}>
       {children}
     </AuthContext.Provider>
   );

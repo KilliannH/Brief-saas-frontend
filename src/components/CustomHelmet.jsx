@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 
 export default function CustomHelmet({ titleKey, descriptionKey, path = "", title, description }) {

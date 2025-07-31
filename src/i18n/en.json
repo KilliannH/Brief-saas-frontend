@@ -138,6 +138,8 @@
   "login.password": "Password",
   "login.button": "Log in",
 
+  "loading": "Loading...",
+
   "paymentCancel.title": "Payment cancelled",
   "paymentCancel.description": "The payment process was cancelled. You can try again at any time.",
 
