@@ -32,6 +32,7 @@ function App() {
 
   return (
     <Routes>
+      <p>Version: HELMET CLEAN ✅</p>
       {/* Public Layout */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Landing />} />
