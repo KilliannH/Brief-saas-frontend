@@ -34,7 +34,6 @@ export default function Landing() {
         path="/"
       />
     <div className="min-h-screen bg-white text-gray-800">
-      <p style={{ color: 'green', textAlign: 'center' }}>Version: HELMET CLEAN ✅</p>
       {/* Hero */}
       <section
   className="relative min-h-[70vh] flex flex-col justify-center items-center text-center text-white overflow-hidden"
