@@ -136,37 +136,37 @@ export default function Dashboard() {
 
           {/* Pagination ici */}
           {totalPages > 1 && (
-  <div className="flex justify-center items-center mt-6 space-x-2">
-    <button
-      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-      disabled={currentPage === 0}
-      className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
-    >
-      {t("pagination.previous") || "Précédent"}
-    </button>
+            <div className="flex justify-center items-center mt-6 space-x-2">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                disabled={currentPage === 0}
+                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+              >
+                {t("pagination.previous") || "Précédent"}
+              </button>
 
-    {[...Array(totalPages)].map((_, index) => (
-      <button
-        key={index}
-        onClick={() => setCurrentPage(index)}
-        className={`px-3 py-1 rounded ${index === currentPage
-          ? "bg-blue-600 text-white"
-          : "bg-gray-200 text-gray-700"
-        }`}
-      >
-        {index + 1}
-      </button>
-    ))}
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index)}
+                  className={`px-3 py-1 rounded ${index === currentPage
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-700"
+                    }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
 
-    <button
-      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
-      disabled={currentPage === totalPages - 1}
-      className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
-    >
-      {t("pagination.next") || "Suivant"}
-    </button>
-  </div>
-)}
+              <button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                disabled={currentPage === totalPages - 1}
+                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+              >
+                {t("pagination.next") || "Suivant"}
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>
