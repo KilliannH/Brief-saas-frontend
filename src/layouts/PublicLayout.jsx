@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import CookieNotice from "../components/CookieNotice";
 import { Link } from "react-router-dom";
 
 export default function PublicLayout() {
@@ -20,6 +21,7 @@ export default function PublicLayout() {
         </p>
         <p className="text-[11px]">&copy; {new Date().getFullYear()} BriefMate</p>
       </footer>
+      <CookieNotice />
     </>
   );
 }

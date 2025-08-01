@@ -235,5 +235,10 @@
   "helmet.404.description": "Oups ! Cette page n'existe pas ou a été déplacée.",
   "notfound.title": "Page non trouvée",
   "notfound.description": "La page que vous recherchez n'existe pas ou a été déplacée.",
-  "notfound.back": "Retour à l'accueil"
+  "notfound.back": "Retour à l'accueil",
+
+  "cookies.message": "Ce site utilise des cookies pour améliorer votre expérience. Vous pouvez tout accepter, uniquement les essentiels, ou tout refuser.",
+  "cookies.button.deny": "Tout refuser",
+  "cookies.button.essentials": "Essentiels uniquement",
+  "cookies.button.accept": "Tout accepter"
 }
