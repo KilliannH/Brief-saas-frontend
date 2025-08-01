@@ -28,7 +28,7 @@
   
   "dashboard.title": "My briefs",
   "button.new": "New brief",
-  "dashboard.noBrief": "No briefs for now.",
+  "dashboard.noBrief": "You don't have any briefs yet. Start one now",
   "briefcard.buttonDownload.title": "Download",
   "briefcard.buttonEdit.title": "Edit",
   "briefcard.buttonEditBlocked.title": "Brief approved – editing disabled",

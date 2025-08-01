@@ -28,7 +28,7 @@
 
   "dashboard.title": "Mes briefs",
   "button.new": "Nouveau brief",
-  "dashboard.noBrief": "Aucun brief pour le moment.",
+  "dashboard.noBrief": "Vous n’avez pas encore de brief. Commencez-en un maintenant",
   "briefcard.buttonDownload.title": "Télécharger",
   "briefcard.buttonEdit.title": "Modifier",
   "briefcard.buttonEditBlocked.title": "Brief validé – édition verrouillée",
