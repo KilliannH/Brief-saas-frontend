@@ -82,6 +82,38 @@ export default function Landing() {
           <p className="mb-6 text-gray-600">{t("pricing.description")}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Gratuit */}
+            <div className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition">
+              <p className="text-2xl font-semibold text-green-700">{t("free.title") || "Gratuit"}</p>
+              <p className="text-sm text-gray-500">{t("free.description") || "Testez la plateforme gratuitement"}</p>
+              <ul className="text-left text-sm text-gray-700 my-4">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature1") || "Créer un brief"}
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature2") || "Modifier et envoyer au client"}
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature3") || "Validation client"}
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature4") || "Jusqu'à 1 brief actif"}
+                </li>
+              </ul>
+              {isAuthenticated ? (
+                <span className="inline-block bg-gray-200 text-gray-700 px-5 py-2 rounded cursor-default">
+                  {t("free.button.included")}
+                </span>
+              ) : (
+                <Link
+                  to="/register"
+                  className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+                >
+                  {t("free.button.try")}
+                </Link>
+              )}
+            </div>
+
             {/* Mensuel */}
             <div className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition">
               <p className="text-2xl font-semibold">{t("pricing.monthly")}</p>
