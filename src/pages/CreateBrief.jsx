@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import CustomHelmet from "../components/CustomHelmet";
@@ -16,13 +16,22 @@ export default function CreateBrief() {
     deadline: "",
     deliverables: [""],
     constraints: "",
-    clientName: "",
-    clientEmail: ""
+    clientId: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [newClient, setNewClient] = useState({ name: "", email: "" });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    api.get("/clients")
+      .then((res) => setClients(res.data))
+      .catch(() => toast.error(t("create.toast.fetch.error")));
+  }, []);
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -74,8 +83,28 @@ export default function CreateBrief() {
           <Input label={t("create.form.budget")} name="budget" value={form.budget} onChange={handleChange} />
           <Input label={t("create.form.deadline")} name="deadline" type="date" value={form.deadline} onChange={handleChange} />
           <Textarea label={t("create.form.constraints")} name="constraints" value={form.constraints} onChange={handleChange} />
-          <Input label={t("create.form.clientName")} name="clientName" value={form.clientName} onChange={handleChange} />
-          <Input label={t("create.form.clientEmail")} name="clientEmail" value={form.clientEmail} onChange={handleChange} />
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Client
+          </label>
+          <select
+            value={form.clientId}
+            onChange={(e) => setForm({ ...form, clientId: e.target.value })}
+            className="w-full border rounded px-3 py-2"
+          >
+            <option value="">{t("brief.form.selectClient")}</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name} ({c.email})
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => setShowClientModal(true)}
+            className="text-blue-600 text-sm mt-2"
+          >
+            + {t("create.button.addClient")}
+          </button>
 
           <FieldList field="objectives" label={t("create.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
           <FieldList field="deliverables" label={t("create.form.deliverables")} values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
@@ -92,6 +121,52 @@ export default function CreateBrief() {
           </button>
         </form>
       </div>
+      {showClientModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-sm animate-fadeInScale">
+            <h2 className="text-lg font-semibold mb-4">{t("clients.modal.add.title")}</h2>
+            <input
+              type="text"
+              placeholder={t("clients.modal.add.name")}
+              value={newClient.name}
+              onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
+              className="w-full mb-3 px-3 py-2 border rounded"
+            />
+            <input
+              type="email"
+              placeholder={t("clients.modal.add.email")}
+              value={newClient.email}
+              onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
+              className="w-full mb-4 px-3 py-2 border rounded"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setShowClientModal(false)}
+                className="text-sm text-gray-500"
+              >
+                {t("clients.modal.add.dismiss")}
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await api.post("/clients", newClient);
+                    setClients((prev) => [...prev, res.data]);
+                    setForm({ ...form, clientId: res.data.id });
+                    toast.success(t("client.create.success"));
+                    setNewClient({ name: "", email: "" });
+                    setShowClientModal(false);
+                  } catch {
+                    toast.error(t("client.create.error"));
+                  }
+                }}
+                className="bg-blue-600 text-white px-4 py-1 rounded text-sm hover:bg-blue-700"
+              >
+                {t("clients.modal.add.ok")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

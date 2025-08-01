@@ -41,6 +41,12 @@ export default function Navbar() {
         {isAuthenticated ? (
           <>
             <Link
+              to="/clients"
+              className="text-gray-700 hover:underline"
+            >
+              {t("navbar.clients")}
+            </Link>
+            <Link
               to="/dashboard"
               className="text-gray-700 hover:underline"
             >

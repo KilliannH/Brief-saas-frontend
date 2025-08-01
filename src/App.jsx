@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateBrief from "./pages/CreateBrief";
 import EditBrief from "./pages/EditBrief";
 import PublicBrief from "./pages/PublicBrief";
+import Clients from "./pages/Clients";
 import LogIn from "./pages/Login";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
@@ -53,6 +54,7 @@ function App() {
       <Route element={<AuthenticatedLayout />}>
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/clients" element={<Clients />} />
           <Route path="/account" element={<Account />} />
           <Route path="/briefs/new" element={<CreateBrief />} />
           <Route path="/briefs/:id/edit" element={<EditBrief />} />

@@ -291,7 +291,7 @@ function BriefCard({ brief, onDelete, onUpdate }) {
       <h2 className="text-xl font-semibold">{brief.title}</h2>
       <p className="text-sm text-gray-600">{brief.description}</p>
 
-      <Field label={t("briefcard.clientField.label")}>{brief.clientName}</Field>
+      <Field label={t("briefcard.clientField.label")}>{brief.client?.name}</Field>
       <Field label={t("briefcard.budgetField.label")}>{brief.budget}</Field>
       <Field label={t("briefcard.deadlineField.label")}>{brief.deadline?.slice(0, 10)}</Field>
       <Field label={t("briefcard.audienceField.label")}>{brief.targetAudience}</Field>

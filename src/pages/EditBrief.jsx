@@ -9,14 +9,27 @@ export default function EditBrief() {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [form, setForm] = useState(null);
+  const [clients, setClients] = useState([]);
+  const [selectedClientId, setSelectedClientId] = useState("");
+
+  useEffect(() => {
+    api.get("/clients")
+      .then((res) => setClients(res.data))
+      .catch(() => toast.error(t("edit.toast.fetch.clients.error")));
+  }, []);
 
   useEffect(() => {
     api.get(`/briefs/${id}`)
       .then(res => setForm(res.data))
-      .catch(() => toast.error(t("edit.toast.fetch.error")));
+      .catch(() => toast.error(t("edit.toast.fetch.briefs.error")));
   }, [id]);
+
+  useEffect(() => {
+  if (form && form.client) {
+    setSelectedClientId(String(form.client.id)); // Cast en string pour le <select>
+  }
+}, [form]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,35 +57,56 @@ export default function EditBrief() {
   };
 
   if (!form) return <p className="text-center mt-10">{t("edit.form.loading")}</p>;
-  
+
   return (
     <>
-    <CustomHelmet
-  title={t("helmet.editBrief.title")}
-  description={t("helmet.editBrief.description")}
-  path="/briefs/:id/edit"
-/>
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">{t("edit.title")}</h1>
+      <CustomHelmet
+        title={t("helmet.editBrief.title")}
+        description={t("helmet.editBrief.description")}
+        path="/briefs/:id/edit"
+      />
+      <div className="max-w-3xl mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-6">{t("edit.title")}</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-        <Input label={t("edit.form.title")} name="title" value={form.title} onChange={handleChange} />
-        <Textarea label={t("edit.form.description")} name="description" value={form.description} onChange={handleChange} />
-        <Textarea label={t("edit.form.audience")} name="targetAudience" value={form.targetAudience} onChange={handleChange} />
-        <Input label={t("edit.form.budget")} name="budget" value={form.budget} onChange={handleChange} />
-        <Input label={t("edit.form.deadline")} type="date" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
-        <Textarea label={t("edit.form.constraints")} name="constraints" value={form.constraints} onChange={handleChange} />
-        <Input label={t("edit.form.clientName")} name="clientName" value={form.clientName} onChange={handleChange} />
-        <Input label={t("edit.form.clientEmail")} name="clientEmail" value={form.clientEmail} onChange={handleChange} />
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
+          <Input label={t("edit.form.title")} name="title" value={form.title} onChange={handleChange} />
+          <Textarea label={t("edit.form.description")} name="description" value={form.description} onChange={handleChange} />
+          <Textarea label={t("edit.form.audience")} name="targetAudience" value={form.targetAudience} onChange={handleChange} />
+          <Input label={t("edit.form.budget")} name="budget" value={form.budget} onChange={handleChange} />
+          <Input label={t("edit.form.deadline")} type="date" name="deadline" value={form.deadline?.slice(0, 16)} onChange={handleChange} />
+          <Textarea label={t("edit.form.constraints")} name="constraints" value={form.constraints} onChange={handleChange} />
+          <label className="block mb-2 text-sm font-medium text-gray-700">
+            Client
+          </label>
+          <select
+            value={selectedClientId}
+            onChange={(e) => {
+  setSelectedClientId(e.target.value);
+  const selectedClient = clients.find(c => String(c.id) === e.target.value);
+  if (selectedClient) {
+    setForm(prev => ({ ...prev, client: selectedClient }));
+  }
+}}
+            className="border rounded px-3 py-2 w-full"
+          >
+            <option value="">{t("brief.form.selectClient")}</option>
+            {clients.map((client) => (
+              <option key={client.id} value={client.id}>
+                {client.name}
+              </option>
+            ))}
+          </select>
 
-        <FieldList field="objectives" label={t("edit.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
-        <FieldList field="deliverables" label={t("edit.form.deliverables")} values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
 
-        <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-          {t("edit.form.button.submit")}
-        </button>
-      </form>
-    </div>
+
+          <FieldList field="objectives" label={t("edit.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
+          <FieldList field="deliverables" label={t("edit.form.deliverables")} values={form.deliverables} onChange={handleListChange} onAdd={addToList} />
+
+          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+            {t("edit.form.button.submit")}
+          </button>
+        </form>
+      </div>
     </>
   );
 }
