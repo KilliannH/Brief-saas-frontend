@@ -3,6 +3,7 @@ import api from "../services/api";
 import { Plus, Trash2, Edit } from "lucide-react";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
+import CustomHelmet from "../components/CustomHelmet";
 import { useTranslation } from "react-i18next";
 
 export default function Clients() {
