@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import CustomHelmet from "../components/CustomHelmet";
+import { Loader2 } from "lucide-react";
 import i18n from "i18next";
 import { useAuth } from "../services/auth";
 
@@ -20,12 +21,14 @@ export default function Register() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const lang = i18n.language;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
     try {
@@ -44,6 +47,8 @@ export default function Register() {
       console.error(err);
       setError(t("register.error"));
       toast.error(t("register.toast.error"));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,11 +135,12 @@ export default function Register() {
         </div>
 
         <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-        >
-          {t("register.button")}
-        </button>
+        type="submit"
+        disabled={loading}
+        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center gap-2"
+      >
+        {loading ? <Loader2 className="animate-spin w-4 h-4" /> : t("register.button")}
+      </button>
       </form>
     </div>
     </>
