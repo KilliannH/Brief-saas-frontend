@@ -65,7 +65,15 @@ export default function Dashboard() {
     );
   };
 
-  if (loading) return <Loader />;
+  if (loading) { 
+    return (
+      <main className="flex flex-col min-h-screen">
+        <div className="flex-grow p-6 max-w-5xl mx-auto w-full">
+          <Loader />
+        </div>;
+      </main>
+    );
+  }
 
   return (
     <>

@@ -250,6 +250,8 @@
   "meta.terms.description": "Lisez nos conditions générales d'utilisation.",
   "meta.verify.title": "Vérification de votre adresse email – BriefMate",
   "meta.verify.description": "Confirmez votre adresse pour activer votre compte BriefMate.",
+  "meta.clients.title": "Mes clients – BriefMate",
+  "meta.clients.description": "Organisez et gérez vos clients simplement depuis votre espace BriefMate.",
 
   "brief.public.meta": "Brief du projet pour {{client}}",
 
