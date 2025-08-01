@@ -77,27 +77,27 @@ export default function Landing() {
         </section>
 
         {/* Tarification */}
-        <section className="px-6 py-20 text-center max-w-2xl mx-auto">
+        <section className="px-6 py-20 text-center max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-6">{t("pricing.title")}</h2>
           <p className="mb-6 text-gray-600">{t("pricing.description")}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Gratuit */}
             <div className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition">
-              <p className="text-2xl font-semibold text-green-700">{t("free.title") || "Gratuit"}</p>
-              <p className="text-sm text-gray-500">{t("free.description") || "Testez la plateforme gratuitement"}</p>
-              <ul className="text-left text-sm text-gray-700 my-4">
+              <p className="text-2xl font-semibold text-green-700">{t("free.title")}</p>
+              <p className="text-sm text-gray-500">{t("free.description")}</p>
+              <ul className="text-left text-sm text-gray-700 my-4 space-y-2">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature1") || "Créer un brief"}
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature1")}
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature2") || "Modifier et envoyer au client"}
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature2")}
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature3") || "Validation client"}
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature3")}
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature4") || "Jusqu'à 1 brief actif"}
+                  <CheckCircle className="w-4 h-4 text-green-600" /> {t("free.feature4")}
                 </li>
               </ul>
               {isAuthenticated ? (
@@ -117,7 +117,7 @@ export default function Landing() {
             {/* Mensuel */}
             <div className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition">
               <p className="text-2xl font-semibold">{t("pricing.monthly")}</p>
-              <ul className="text-left text-sm text-gray-700 my-4">
+              <ul className="text-left text-sm text-gray-700 my-4 space-y-2">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600" /> {t("pricing.monthly.feature1")}
                 </li>
@@ -130,7 +130,7 @@ export default function Landing() {
               </ul>
               {isAuthenticated ? (
                 <button
-                  onClick={() => handleSubscribe(monthlyId)} // remplace par ton vrai ID
+                  onClick={() => handleSubscribe(monthlyId)}
                   className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
                 >
                   {t("button.monthly.subscribe")}
@@ -149,7 +149,7 @@ export default function Landing() {
             <div className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition">
               <p className="text-2xl font-semibold">{t("pricing.annual")}</p>
               <p className="text-sm text-gray-500">{t("pricing.annual.description")}</p>
-              <ul className="text-left text-sm text-gray-700 my-4">
+              <ul className="text-left text-sm text-gray-700 my-4 space-y-2">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600" /> {t("pricing.annual.feature1")}
                 </li>
@@ -165,7 +165,7 @@ export default function Landing() {
               </ul>
               {isAuthenticated ? (
                 <button
-                  onClick={() => handleSubscribe(annualId)} // remplace par ton vrai ID
+                  onClick={() => handleSubscribe(annualId)}
                   className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
                 >
                   {t("button.annual.subscribe")}
