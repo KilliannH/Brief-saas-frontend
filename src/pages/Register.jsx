@@ -139,7 +139,8 @@ export default function Register() {
         disabled={loading}
         className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition flex items-center justify-center gap-2"
       >
-        {loading ? <Loader2 className="animate-spin w-4 h-4" /> : t("register.button")}
+        {loading && <Loader2 className="animate-spin w-4 h-4" />}
+        {t("register.button")}
       </button>
       </form>
     </div>

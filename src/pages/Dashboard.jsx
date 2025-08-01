@@ -74,109 +74,113 @@ export default function Dashboard() {
         descriptionKey="meta.dashboard.description"
         path="/dashboard"
       />
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        {/* Groupe titre + select */}
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+      <main className="flex flex-col min-h-screen">
+        <div className="flex-grow p-6 max-w-5xl mx-auto w-full">
+        <div className="p-6 max-w-5xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            {/* Groupe titre + select */}
+            <div className="flex items-center gap-4">
+              <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
 
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="border px-3 py-1 rounded text-sm"
-          >
-            <option value="ALL">{t("dashboard.filter.all")}</option>
-            <option value="DRAFT">{t("dashboard.filter.draft")}</option>
-            <option value="SUBMITTED">{t("dashboard.filter.submitted")}</option>
-            <option value="VALIDATED">{t("dashboard.filter.validated")}</option>
-            { // <option value="ARCHIVED">{t("dashboard.filter.archived")}</option> -- V2
-            }
-          </select>
-        </div>
-
-        {/* Restriction : 1 brief max pour comptes gratuits */}
-        {!user?.subscriptionActive && briefs.length >= 1 ? (
-          <div className="flex items-center gap-2">
-            <button
-              disabled
-              className="bg-gray-300 text-white px-4 py-2 rounded text-sm cursor-not-allowed flex items-center gap-2"
-              title={t("dashboard.restriction.freePlan")}
-            >
-              <Plus size={16} />
-              {t("button.new")}
-            </button>
-            <span className="text-sm text-gray-500">
-              {t("dashboard.restriction.limitReached")}
-            </span>
-            <Link
-              to="/account"
-              className="text-blue-600 text-sm underline hover:text-blue-800"
-            >
-              {t("dashboard.restriction.upgradeLink")}
-            </Link>
-          </div>
-        ) : (
-          <Link
-            to="/briefs/new"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
-          >
-            <Plus size={16} />
-            {t("button.new")}
-          </Link>
-        )}
-      </div>
-
-      {briefs.length === 0 ? (
-        <p className="text-gray-600">{t("dashboard.noBrief")}</p>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredBriefs.map((brief) => (
-              <BriefCard
-                key={brief.id}
-                brief={brief}
-                onDelete={handleDelete}
-                onUpdate={updateBrief}
-              />
-            ))}
-          </div>
-
-          {/* Pagination ici */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-6 space-x-2">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-                disabled={currentPage === 0}
-                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="border px-3 py-1 rounded text-sm"
               >
-                {t("pagination.previous") || "Précédent"}
-              </button>
-
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentPage(index)}
-                  className={`px-3 py-1 rounded ${index === currentPage
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700"
-                    }`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-
-              <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
-                disabled={currentPage === totalPages - 1}
-                className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
-              >
-                {t("pagination.next") || "Suivant"}
-              </button>
+                <option value="ALL">{t("dashboard.filter.all")}</option>
+                <option value="DRAFT">{t("dashboard.filter.draft")}</option>
+                <option value="SUBMITTED">{t("dashboard.filter.submitted")}</option>
+                <option value="VALIDATED">{t("dashboard.filter.validated")}</option>
+                { // <option value="ARCHIVED">{t("dashboard.filter.archived")}</option> -- V2
+                }
+              </select>
             </div>
+
+            {/* Restriction : 1 brief max pour comptes gratuits */}
+            {!user?.subscriptionActive && briefs.length >= 1 ? (
+              <div className="flex items-center gap-2">
+                <button
+                  disabled
+                  className="bg-gray-300 text-white px-4 py-2 rounded text-sm cursor-not-allowed flex items-center gap-2"
+                  title={t("dashboard.restriction.freePlan")}
+                >
+                  <Plus size={16} />
+                  {t("button.new")}
+                </button>
+                <span className="text-sm text-gray-500">
+                  {t("dashboard.restriction.limitReached")}
+                </span>
+                <Link
+                  to="/account"
+                  className="text-blue-600 text-sm underline hover:text-blue-800"
+                >
+                  {t("dashboard.restriction.upgradeLink")}
+                </Link>
+              </div>
+            ) : (
+              <Link
+                to="/briefs/new"
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm flex items-center gap-2"
+              >
+                <Plus size={16} />
+                {t("button.new")}
+              </Link>
+            )}
+          </div>
+
+          {briefs.length === 0 ? (
+            <p className="text-gray-600">{t("dashboard.noBrief")}</p>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredBriefs.map((brief) => (
+                  <BriefCard
+                    key={brief.id}
+                    brief={brief}
+                    onDelete={handleDelete}
+                    onUpdate={updateBrief}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination ici */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center mt-6 space-x-2">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                    disabled={currentPage === 0}
+                    className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+                  >
+                    {t("pagination.previous") || "Précédent"}
+                  </button>
+
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentPage(index)}
+                      className={`px-3 py-1 rounded ${index === currentPage
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-700"
+                        }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                    disabled={currentPage === totalPages - 1}
+                    className="px-3 py-1 rounded bg-gray-200 text-gray-700 disabled:opacity-50"
+                  >
+                    {t("pagination.next") || "Suivant"}
+                  </button>
+                </div>
+              )}
+            </>
           )}
-        </>
-      )}
-    </div>
+          </div>
+        </div>
+      </main>
     </>
   );
 }
