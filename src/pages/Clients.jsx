@@ -13,6 +13,8 @@ export default function Clients() {
     const [form, setForm] = useState({ name: "", email: "" });
     const [showEditModal, setShowEditModal] = useState(false);
     const [editingClient, setEditingClient] = useState(null);
+    const MAX_CLIENTS_FREE = 1;
+    const hasReachedLimit = clients.length >= MAX_CLIENTS_FREE;
 
     const fetchClients = async () => {
         try {
@@ -47,12 +49,15 @@ export default function Clients() {
         try {
             const res = await api.post("/clients", form);
             setClients(prev => [...prev, res.data]);
-            toast.success("client.create.success");
+            toast.success(t("client.create.success"));
             setShowModal(false);
             setForm({ name: "", email: "" });
         } catch (err) {
-            console.error(err);
-            toast.error(t("client.create.error"));
+            if (err.response?.status === 403) {
+                toast.error(t("client.restriction.clientLimitReached"));
+            } else {
+                toast.error(t("client.create.error"));
+            }
         }
     };
 
@@ -65,8 +70,13 @@ export default function Clients() {
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-2xl font-bold">{t("clients.title")}</h1>
                         <button
-                            onClick={() => setShowModal(true)}
-                            className="bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-2 hover:bg-blue-700"
+                            onClick={() => !hasReachedLimit && setShowModal(true)}
+                            className={`px-3 py-1 rounded flex items-center gap-2 ${hasReachedLimit
+                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                    : "bg-blue-600 text-white hover:bg-blue-700"
+                                }`}
+                            disabled={hasReachedLimit}
+                            title={hasReachedLimit ? t("clients.restriction.clientLimitReached") : ""}
                         >
                             <Plus size={16} />
                             {t("clients.add")}

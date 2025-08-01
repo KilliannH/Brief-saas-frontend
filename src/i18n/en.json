@@ -160,6 +160,8 @@
   "client.edit.success": "Client updated!",
   "client.edit.error": "Failed to update client",
   "clients.modal.edit.title": "Edit this client",
+  "clients.restriction.clientLimitReached": "Client limit reached for a free account. Upgrade to a subscription to add more clients.",
+
 
   "brief.form.selectClient": "Select client",
 
