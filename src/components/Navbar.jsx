@@ -9,6 +9,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
   const menuRef = useRef(null);
   const { t } = useTranslation();
 
@@ -24,6 +25,26 @@ export default function Navbar() {
 
   return (
     <>
+      {showBanner && (
+        <div className="bg-blue-50 text-blue-900 text-center text-sm py-2 px-4 border-b border-blue-100 relative">
+          🚀 <strong>{t("banner.title")}</strong> – {t("banner.description")}{" "}
+          <a
+            href="https://www.producthunt.com/posts/briefmate"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-medium hover:text-blue-600"
+          >
+            Product Hunt
+          </a>!
+          <button
+            onClick={() => setShowBanner(false)}
+            className="absolute right-3 top-2 text-blue-700 hover:text-blue-900"
+            aria-label="Close banner"
+          >
+            ×
+          </button>
+        </div>
+      )}
       {/* NAVBAR */}
       <nav className="px-6 py-4 border-b bg-white flex justify-between items-center shadow-sm sticky top-0 z-50">
         <div className="flex items-center gap-4">
@@ -104,17 +125,15 @@ export default function Navbar() {
 
       {/* Overlay (fade-in / fade-out) */}
       <div
-        className={`fixed inset-0 z-40 bg-black transition-opacity duration-300 ease-in-out ${
-          openMenu ? "opacity-40 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 bg-black transition-opacity duration-300 ease-in-out ${openMenu ? "opacity-40 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
         onClick={() => setOpenMenu(false)}
       />
 
       {/* Side drawer */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white z-50 shadow-md transition-transform duration-300 ease-in-out transform ${
-          openMenu ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 h-full w-64 bg-white z-50 shadow-md transition-transform duration-300 ease-in-out transform ${openMenu ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex items-center justify-between p-4 border-b">
           <img src={logo} alt="BriefMate logo" className="h-8" />

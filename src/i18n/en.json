@@ -282,5 +282,8 @@
   "cookies.message": "This site uses cookies to enhance your experience. You can accept all cookies, only essential ones, or deny all.",
   "cookies.button.deny": "Deny All",
   "cookies.button.essentials": "Only Essentials",
-  "cookies.button.accept": "Accept All"
+  "cookies.button.accept": "Accept All",
+
+  "banner.title": "Launch Release",
+  "banner.description": "BriefMate is now live on"
 }
