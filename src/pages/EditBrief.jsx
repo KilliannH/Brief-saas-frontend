@@ -119,7 +119,7 @@ export default function EditBrief() {
             onClick={() => setShowClientModal(true)}
             className={`text-sm mt-2 ${clientLimitReached ? "text-gray-400 cursor-not-allowed" : "text-blue-600"}`}
             disabled={clientLimitReached}
-            title={clientLimitReached ? t("dashboard.restriction.freePlan") : t("create.button.addClient")}
+            title={clientLimitReached ? t("edit.restriction.clientReached") : t("create.button.addClient")}
           >
             + {t("create.button.addClient")}
           </button>
