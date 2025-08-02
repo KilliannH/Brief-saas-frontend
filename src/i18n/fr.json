@@ -109,6 +109,7 @@
 
   "edit.toast.fetch.briefs.error": "Brief introuvable",
   "edit.toast.fetch.clients.error": "Erreur lors de la récupération des clients",
+  "edit.toast.fetch.user.error": "Erreur lors de la récupération de l'utilisateur",
   "edit.toast.submit.success": "Brief mis à jour avec succès sur BriefMate !",
   "edit.toast.submit.error": "Erreur lors de la mise à jour",
   "edit.form.loading": "Chargement...",
@@ -125,6 +126,7 @@
   "edit.form.deliverables": "Livrables attendus",
   "edit.form.button.submit": "Sauvegarder les modifications",
   "edit.form.button.add": "+ Ajouter",
+  "edit.restriction.clientReached" : "Vous avez atteint le nombre maximum de clients autorisé avec le plan gratuit.",
 
   "account.monthly.plan.label": "Mensuel (7,99€/mois)",
   "account.annual.plan.label": "Annuel (60€/an)",

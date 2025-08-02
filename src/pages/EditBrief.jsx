@@ -9,8 +9,12 @@ export default function EditBrief() {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [clientLimitReached, setClientLimitReached] = useState(false);
   const [form, setForm] = useState(null);
   const [clients, setClients] = useState([]);
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [newClient, setNewClient] = useState({ name: "", email: "" });
   const [selectedClientId, setSelectedClientId] = useState("");
 
   useEffect(() => {
@@ -20,16 +24,30 @@ export default function EditBrief() {
   }, []);
 
   useEffect(() => {
+    api.get("/me")
+      .then((res) => setUser(res.data))
+      .catch(() => toast.error(t("edit.toast.fetch.user.error")));
+  }, []);
+
+  useEffect(() => {
+    if (clients.length >= 1 && !user?.subscriptionActive) {
+      setClientLimitReached(true);
+    } else {
+      setClientLimitReached(false);
+    }
+  }, [user, clients]);
+
+  useEffect(() => {
     api.get(`/briefs/${id}`)
       .then(res => setForm(res.data))
       .catch(() => toast.error(t("edit.toast.fetch.briefs.error")));
   }, [id]);
 
   useEffect(() => {
-  if (form && form.client) {
-    setSelectedClientId(String(form.client.id)); // Cast en string pour le <select>
-  }
-}, [form]);
+    if (form && form.client) {
+      setSelectedClientId(String(form.client.id)); // Cast en string pour le <select>
+    }
+  }, [form]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -81,12 +99,12 @@ export default function EditBrief() {
           <select
             value={selectedClientId}
             onChange={(e) => {
-  setSelectedClientId(e.target.value);
-  const selectedClient = clients.find(c => String(c.id) === e.target.value);
-  if (selectedClient) {
-    setForm(prev => ({ ...prev, client: selectedClient }));
-  }
-}}
+              setSelectedClientId(e.target.value);
+              const selectedClient = clients.find(c => String(c.id) === e.target.value);
+              if (selectedClient) {
+                setForm(prev => ({ ...prev, client: selectedClient }));
+              }
+            }}
             className="border rounded px-3 py-2 w-full"
           >
             <option value="">{t("brief.form.selectClient")}</option>
@@ -96,7 +114,15 @@ export default function EditBrief() {
               </option>
             ))}
           </select>
-
+          <button
+            type="button"
+            onClick={() => setShowClientModal(true)}
+            className={`text-sm mt-2 ${clientLimitReached ? "text-gray-400 cursor-not-allowed" : "text-blue-600"}`}
+            disabled={clientLimitReached}
+            title={clientLimitReached ? t("dashboard.restriction.freePlan") : t("create.button.addClient")}
+          >
+            + {t("create.button.addClient")}
+          </button>
 
 
           <FieldList field="objectives" label={t("edit.form.objectives")} values={form.objectives} onChange={handleListChange} onAdd={addToList} />
@@ -107,6 +133,52 @@ export default function EditBrief() {
           </button>
         </form>
       </div>
+      {showClientModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-md w-full max-w-sm animate-fadeInScale">
+            <h2 className="text-lg font-semibold mb-4">{t("clients.modal.add.title")}</h2>
+            <input
+              type="text"
+              placeholder={t("clients.modal.add.name")}
+              value={newClient.name}
+              onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
+              className="w-full mb-3 px-3 py-2 border rounded"
+            />
+            <input
+              type="email"
+              placeholder={t("clients.modal.add.email")}
+              value={newClient.email}
+              onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
+              className="w-full mb-4 px-3 py-2 border rounded"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setShowClientModal(false)}
+                className="text-sm text-gray-500"
+              >
+                {t("clients.modal.add.dismiss")}
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await api.post("/clients", newClient);
+                    setClients((prev) => [...prev, res.data]);
+                    setForm({ ...form, clientId: res.data.id });
+                    toast.success(t("client.create.success"));
+                    setNewClient({ name: "", email: "" });
+                    setShowClientModal(false);
+                  } catch {
+                    toast.error(t("client.create.error"));
+                  }
+                }}
+                className="bg-blue-600 text-white px-4 py-1 rounded text-sm hover:bg-blue-700"
+              >
+                {t("clients.modal.add.ok")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

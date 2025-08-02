@@ -10,11 +10,11 @@ import "./i18n";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <HelmetProvider>
-  <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-  </BrowserRouter>
-  </HelmetProvider>
-</StrictMode>
+      <BrowserRouter>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+  </StrictMode>
 );

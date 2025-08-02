@@ -109,6 +109,7 @@
 
   "edit.toast.fetch.brief.error": "Brief not found",
   "edit.toast.fetch.clients.error": "Error while fetching clients",
+  "edit.toast.fetch.user.error": "Error while fetching user",
   "edit.toast.submit.success": "Brief successfully updated on BriefMate!",
   "edit.toast.submit.error": "Error while updating the brief",
   "edit.form.loading": "Loading...",
@@ -125,6 +126,7 @@
   "edit.form.deliverables": "Expected deliverables",
   "edit.form.button.submit": "Save changes",
   "edit.form.button.add": "+ Add",
+  "edit.restriction.clientReached" : "You have reached the maximum number of clients allowed on the free plan.",
 
   "account.monthly.plan.label": "Monthly (€7.99/month)",
   "account.annual.plan.label": "Annual (€60/year)",

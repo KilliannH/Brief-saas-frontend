@@ -10,7 +10,6 @@ export default function VerifyEmail() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  console.log(token);
   const [status, setStatus] = useState("loading"); // 'loading' | 'success' | 'error'
   const navigate = useNavigate();
 
